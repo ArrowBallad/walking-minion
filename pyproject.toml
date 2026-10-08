@@ -11,7 +11,7 @@ dependencies = []
 
 [project.scripts]
 clinical-agent-explorer = "clinical_agent_explorer.cli:main"
+clinical-agent-explorer-phase1 = "clinical_agent_explorer_phase1.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-

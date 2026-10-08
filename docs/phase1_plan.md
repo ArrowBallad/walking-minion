@@ -1,30 +1,47 @@
-# Phase 1 实施计划
+# Phase 1：受限纵向信息检索
 
-Phase 1 验证可检查的 Agent runtime，而不是预先规定的临床答案。
+当前 `clinical_agent_explorer` 包保留为 Phase 0，用于证明 tool calling、trace、写入回读和最终证据引用的基础数据链路。Phase 1 使用独立的 `clinical_agent_explorer_phase1` 包，不覆盖 Phase 0。
 
-## 硬性基础设施不变量
+## 目标
 
-- Agent 只能通过已注册工具取得患者数据。
-- 案例数据、运行状态、prompt snapshot、患者记忆和 trace 分开存储。
-- 临床时间不能被运行时间戳替代。
-- 新旧记录都保持可单独检查。
-- 原始工具输入和输出完整保留。
-- Memory 是既往工作，不是当前临床证据。
-- 写入 receipt 不等于写入已经验证。
-- 验证需要单独且匹配的 read-back。
-- 参数错误、工具失败、模型输出格式错误和 iteration limit 都能干净停止。
-- 保存的 artifacts 可以还原完整可观察执行过程，但不保存隐藏思维过程。
+Phase 1 观察：面对 30–50 条分散的纵向记录，Agent 是否能形成有限的信息需求，检索索引、选择少量全文、维护本次运行的 working context，并自行决定何时停止。
 
-这些性质使用确定性自动测试验证。
+Runtime 不编码正确检索顺序、临床结论、订单、未解决问题或 memory 内容。确定性自动测试只覆盖 infrastructure invariants；Agent 行为通过原始 trace 人工分析。
 
-## 观察性的 Agent 行为
+## 最小目录边界
 
-Runtime 不编码正确工具顺序、临床结论、订单、未解决问题或 memory 内容。这些内容在运行后检查，不写入基础设施断言。
+- `src/clinical_agent_explorer_phase1/`：runtime、工具边界、可变 mock DB、memory 和 artifacts。
+- `cases/phase1_development/`：公开 development case；可以反复用于发现通用 plumbing 问题。
+- `cases/phase1_challenge/`：runtime 冻结后创建的一个 unseen challenge case。
+- `tests_phase1/`：只验证确定性工程边界。
+- `work/phase1/`：从 case seed 复制出的可变 DB 与 patient memory；不属于 case data。
+- `runs/phase1/`：逐次运行的原始 prompt、模型响应、工具输入输出、状态事件和 final。
+- `docs/phase1_runtime_freeze.md`：challenge 前的 runtime 哈希与测试状态。
+- `docs/phase1_agent_review.md`：development 与 challenge 的人工行为审查；不是 evaluator 或 rubric。
 
-## 案例
+## 数据与 prompt 分层
 
-`cases/development/gi_dev_001` 是公开 development case，可以用于调试数据链路。Runtime 基本冻结后，在 `cases/challenge/` 中加入一个具有实质差异的 challenge case。它不包含 private gold、rubric 或自动临床 evaluator；运行 trace 在 `docs/challenge_analysis.md` 中人工审查。
+- Patient DB：全部原始纵向记录。
+- Retrieved index：`search_records` 实际发现过的索引级记录。
+- Inspected records：`get_record` 实际读取过全文的记录。
+- Patient working context：Agent 选择保存的 `known_facts`、`unresolved_questions`、`conflicts` 和相关记录引用。
+- Prompt：任务、有限 working context、近期原始工具结果和不含临床正文的近期调用账本。
+- Patient memory：跨运行的工作连续性信息；不能代替本轮数据库重查。
 
-如果在查看 challenge 行为后修改 runtime，后续运行必须标记为探索性运行，不能继续称为对冻结 runtime 的 unseen observation。
+## 已硬化的工程边界
 
-所有当前及后续案例的任务说明和病例叙述均使用中文。
+- 首轮 prompt 不含病例数据，患者数据只能通过工具访问。
+- `search_records` 只返回索引字段并支持过滤、limit 与 cursor；`get_record` 才返回全文。
+- Preview 不能支持 working facts、最终证据或写入证据。
+- 临床时间与 runtime timestamp 分离；新旧记录不会互相覆盖。
+- 原始工具结果完整保留，prompt 只携带有限的最近结果。
+- 每轮工具调用是原子的；批量调用会被记录并拒绝，不会部分执行。
+- Working context 中的事实和冲突只能引用已读全文记录；冲突至少需要两条已读证据。
+- Memory 不自动进入 inspected evidence 集合。
+- Receipt 不是 verified write；匹配的独立 read-back 才改变验证状态。
+- 参数错误、tool error、无效 model output、iteration limit 和 tool-call limit 都能干净停止。
+- 无效 final 最多反馈两次供 Agent 修正，证据边界不会因此放宽。
+
+## 案例策略
+
+公开 development case 可以用于修复与任何病例无关的接口和上下文问题。Runtime 冻结后只创建一个中文 unseen challenge case，不提供 private gold、rubric 或自动临床 evaluator。Challenge 后不再修改冻结 runtime；只根据 trace 分析检索、工作认知、时间处理、冲突处理、停止策略和失败模式。

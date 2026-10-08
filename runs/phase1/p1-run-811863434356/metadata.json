@@ -1,0 +1,19 @@
+{
+  "case_id": "gi_longitudinal_001",
+  "created_at": "2026-10-08T06:17:47.458075Z",
+  "max_final_revisions": 2,
+  "max_prompt_bytes": 32000,
+  "max_steps": 20,
+  "max_tool_calls": 30,
+  "model": {
+    "adapter": "deepseek-chat-completions",
+    "base_url": "https://api.deepseek.com",
+    "model": "deepseek-chat",
+    "parallel_tool_calls": false,
+    "thinking": "disabled"
+  },
+  "patient_id": "GI-LONG-001",
+  "phase": "phase1",
+  "recent_result_limit": 2,
+  "run_id": "p1-run-811863434356"
+}
