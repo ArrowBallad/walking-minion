@@ -1,0 +1,13 @@
+{
+  "case_id": "gi_dev_001",
+  "created_at": "2026-10-08T03:44:14.872618Z",
+  "max_steps": 12,
+  "model": {
+    "adapter": "deepseek-openai-compatible-chat-completions",
+    "base_url": "https://api.deepseek.com",
+    "model": "deepseek-flash",
+    "thinking": "disabled"
+  },
+  "patient_id": "GI-001",
+  "run_id": "run-04d7e9c1b853"
+}
