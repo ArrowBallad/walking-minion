@@ -101,3 +101,5 @@ Agent 将 2026-02-02 门诊列出的用药状态标为 historical，并把后续
 > 历史说明：最后一句描述的是 V1 决策。首次 challenge 后，项目按 `phase1-v2-recoverable-tool-errors` 新版本处理这一通用 runtime 问题；原始 V1 artifacts 和结论保持不变。
 
 V3 stopping contract 的 regression replay 与新 unseen stopping case 见 `docs/phase1_v3_stopping_review.md`。
+
+V4 persistent retrieval catalog 的 cough regression replay 见 `docs/phase1_v4_retrieval_review.md`。该运行属于 development/regression replay，不是新的 unseen challenge。

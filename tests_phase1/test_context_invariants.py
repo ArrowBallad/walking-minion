@@ -60,6 +60,17 @@ class ContextInvariantTests(unittest.TestCase):
         result = self.tools.execute("update_working_context", arguments, self.state)
         self.assertEqual(2, len(result["patient_context"]["conflicts"][0]["evidence_refs"]))
 
+    def test_discovered_previews_cannot_support_conflict(self) -> None:
+        self.state.discovered_record_ids.extend(["rec-3", "rec-5"])
+        arguments = context_args("rec-3")
+        arguments["known_facts"] = []
+        arguments["conflicts"] = [
+            {"statement": "只有索引预览的两条记录似乎冲突。", "evidence_refs": ["rec-3", "rec-5"]}
+        ]
+        arguments["relevant_record_refs"] = ["rec-3", "rec-5"]
+        with self.assertRaisesRegex(ToolError, "未读取全文"):
+            self.tools.execute("update_working_context", arguments, self.state)
+
     def test_write_evidence_must_be_inspected(self) -> None:
         self.state.discovered_record_ids.append("rec-3")
         with self.assertRaisesRegex(ToolError, "未读取全文"):
@@ -78,4 +89,3 @@ class ContextInvariantTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

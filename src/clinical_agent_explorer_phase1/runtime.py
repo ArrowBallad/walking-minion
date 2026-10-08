@@ -12,7 +12,16 @@ from .storage import MemoryStore, RunArtifacts
 from .tools import ToolError, ToolRegistry
 
 
-RUNTIME_VERSION = "phase1-v3-stopping-contract"
+RUNTIME_VERSION = "phase1-v4-retrieval-awareness"
+
+RETRIEVAL_CATALOG_INDEX_FIELDS = (
+    "record_id",
+    "record_type",
+    "clinical_time",
+    "title",
+    "preview",
+    "status",
+)
 
 RECOVERABLE_TOOL_ERROR_CODES = frozenset(
     {
@@ -38,6 +47,11 @@ STOPPING_GUIDANCE = {
     "unread_index_is_not_obligation": "index 中存在未读记录，不等于必须全部读取。",
     "pagination_is_need_driven": (
         "has_more=true 不意味着必须翻完所有页面；只有当前 information need 需要继续搜索时才分页。"
+    ),
+    "catalog_check_before_final": (
+        "准备 final 前检查 persistent retrieval catalog：若已发现但未读候选的 title、type 或 preview "
+        "明显可能直接回答 task 的明确要求或仍保留的 unresolved question，应自行决定读取该记录，"
+        "或判断它对当前 task 不具有实质作用。不会改变 clinical conclusion，不等于不会影响 task completion。"
     ),
     "decision_owner": (
         "是否已有足够证据由 Agent 根据当前 task 判断；runtime 不计算 clinical sufficiency，"
@@ -68,6 +82,8 @@ SYSTEM_PROMPT = """你正在操作一个完全使用合成数据的纵向临床�
 - 只有当某个缺失信息可能实质改变当前 assessment 时，才值得继续查询。
 - index 中存在未读记录，不等于必须全部读取。
 - has_more=true 不意味着必须翻完所有页面；只有当前 information need 需要继续搜索时才分页。
+- 准备 final 前检查 persistent retrieval catalog。若某个已发现但未读候选的 title、type 或 preview 明显可能直接回答当前 task 的明确要求或 working context 中仍保留的 unresolved question，应自行决定读取该记录，或者判断它对当前 task 不具有实质作用。
+- “不会改变 clinical conclusion”不等于“不会影响 task completion”：某条记录即使不改变核心结论，也可能直接回答用户明确要求的一部分。
 - 是否已有足够证据由你根据当前 task 判断；runtime 不计算 clinical sufficiency，不强制工具顺序，也不替你决定停止。
 - 所有自然语言使用中文。
 
@@ -154,6 +170,8 @@ class ClinicalAgentRuntime:
         max_prompt_bytes: int = 32_000,
         max_final_revisions: int = 2,
         max_consecutive_recoverable_errors: int = 2,
+        retrieval_catalog_limit: int = 24,
+        retrieval_preview_chars: int = 160,
     ) -> None:
         if min(
             max_steps,
@@ -162,6 +180,8 @@ class ClinicalAgentRuntime:
             max_prompt_bytes,
             max_final_revisions,
             max_consecutive_recoverable_errors,
+            retrieval_catalog_limit,
+            retrieval_preview_chars,
         ) < 1:
             raise ValueError("runtime limits 必须为正数")
         self.client = client
@@ -174,6 +194,8 @@ class ClinicalAgentRuntime:
         self.max_prompt_bytes = max_prompt_bytes
         self.max_final_revisions = max_final_revisions
         self.max_consecutive_recoverable_errors = max_consecutive_recoverable_errors
+        self.retrieval_catalog_limit = retrieval_catalog_limit
+        self.retrieval_preview_chars = retrieval_preview_chars
 
     def run(
         self,
@@ -200,6 +222,8 @@ class ClinicalAgentRuntime:
                 "max_prompt_bytes": self.max_prompt_bytes,
                 "max_final_revisions": self.max_final_revisions,
                 "max_consecutive_recoverable_errors": self.max_consecutive_recoverable_errors,
+                "retrieval_catalog_limit": self.retrieval_catalog_limit,
+                "retrieval_preview_chars": self.retrieval_preview_chars,
                 "model": model_metadata or {},
             },
         )
@@ -506,6 +530,7 @@ class ClinicalAgentRuntime:
         recent_activity: list[dict[str, Any]],
         omitted_results: int,
     ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+        retrieval_catalog = self._retrieval_catalog_view(state)
         selected_results = copy.deepcopy(recent_results)
         trimmed_here = 0
         while True:
@@ -520,6 +545,7 @@ class ClinicalAgentRuntime:
                     "inspected_record_ids": state.inspected_record_ids,
                     "patient_record_ids": state.patient_record_ids,
                 },
+                "retrieval_catalog": retrieval_catalog,
                 "patient_context": state.patient_context.to_dict(),
                 "context_status": {
                     "fresh_full_record_ids_in_recent_results": [
@@ -577,6 +603,49 @@ class ClinicalAgentRuntime:
                 "prompt_context_too_large",
                 f"即使移除最近工具结果，prompt 仍超过 {self.max_prompt_bytes} bytes。",
             )
+
+    def _retrieval_catalog_view(self, state: RunState) -> dict[str, Any]:
+        catalog_ids = [row.get("record_id") for row in state.discovered_records]
+        if (
+            catalog_ids != state.discovered_record_ids
+            or len(catalog_ids) != len(set(catalog_ids))
+            or not all(isinstance(record_id, str) and record_id for record_id in catalog_ids)
+        ):
+            raise RuntimeFailure(
+                "retrieval_catalog_inconsistent",
+                "discovered_records 与 discovered_record_ids 不一致。",
+            )
+
+        selected = state.discovered_records[: self.retrieval_catalog_limit]
+        inspected = set(state.inspected_record_ids)
+        prompt_records: list[dict[str, Any]] = []
+        for record in selected:
+            preview = record.get("preview")
+            preview_text = preview if isinstance(preview, str) else ""
+            if len(preview_text) > self.retrieval_preview_chars:
+                preview_text = preview_text[: self.retrieval_preview_chars - 1] + "…"
+            prompt_records.append(
+                {
+                    "record_id": record.get("record_id"),
+                    "record_type": record.get("record_type"),
+                    "clinical_time": record.get("clinical_time"),
+                    "title": record.get("title"),
+                    "status": record.get("status"),
+                    "short_preview": preview_text,
+                    "inspected": record.get("record_id") in inspected,
+                }
+            )
+        return {
+            "records": prompt_records,
+            "included_count": len(prompt_records),
+            "total_discovered_count": len(state.discovered_records),
+            "omitted_count": len(state.discovered_records) - len(prompt_records),
+            "limit": self.retrieval_catalog_limit,
+            "policy": (
+                "仅包含 search_records 已实际返回的紧凑索引元数据；short_preview 不是临床证据，"
+                "只有 get_record 后 inspected=true 的记录才可支持正式事实。"
+            ),
+        }
 
     @staticmethod
     def _activity_view(call: ToolCall, result: dict[str, Any]) -> dict[str, Any]:
@@ -717,12 +786,20 @@ class ClinicalAgentRuntime:
         elif call.name == "search_records":
             for record in result.get("records", []):
                 record_id = record.get("record_id")
-                if record_id and record_id not in state.discovered_record_ids:
+                if not isinstance(record_id, str) or not record_id:
+                    continue
+                compact_record = {
+                    field: copy.deepcopy(record.get(field))
+                    for field in RETRIEVAL_CATALOG_INDEX_FIELDS
+                }
+                if record_id in state.discovered_record_ids:
+                    index = state.discovered_record_ids.index(record_id)
+                    state.discovered_records[index] = compact_record
+                else:
                     state.discovered_record_ids.append(record_id)
+                    state.discovered_records.append(compact_record)
         elif call.name == "get_record" and result.get("record"):
             record_id = result["record"].get("record_id")
-            if record_id and record_id not in state.discovered_record_ids:
-                state.discovered_record_ids.append(record_id)
             if record_id and record_id not in state.inspected_record_ids:
                 state.inspected_record_ids.append(record_id)
         elif call.name == "update_working_context":

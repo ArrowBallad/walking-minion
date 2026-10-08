@@ -25,12 +25,14 @@ class StoppingContractTests(unittest.TestCase):
             )
 
             self.assertEqual("complete", state.status)
-            self.assertEqual("phase1-v3-stopping-contract", RUNTIME_VERSION)
+            self.assertEqual("phase1-v4-retrieval-awareness", RUNTIME_VERSION)
             self.assertIn("不需要解决所有 unresolved questions 才能结束", SYSTEM_PROMPT)
             self.assertIn("应优先结束并生成 final", SYSTEM_PROMPT)
             self.assertIn("可能实质改变当前 assessment", SYSTEM_PROMPT)
             self.assertIn("index 中存在未读记录，不等于必须全部读取", SYSTEM_PROMPT)
             self.assertIn("has_more=true 不意味着必须翻完所有页面", SYSTEM_PROMPT)
+            self.assertIn("准备 final 前检查 persistent retrieval catalog", SYSTEM_PROMPT)
+            self.assertIn("不会影响 task completion", SYSTEM_PROMPT)
             self.assertIn("runtime 不计算 clinical sufficiency", SYSTEM_PROMPT)
 
             payload = json.loads(client.contexts[0][1]["content"])
@@ -42,6 +44,7 @@ class StoppingContractTests(unittest.TestCase):
                     "continue_only_if_material",
                     "unread_index_is_not_obligation",
                     "pagination_is_need_driven",
+                    "catalog_check_before_final",
                     "decision_owner",
                 },
                 set(payload["stopping_guidance"]),

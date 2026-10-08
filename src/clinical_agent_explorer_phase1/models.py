@@ -28,6 +28,7 @@ class RunState:
     status: str = "running"
     step: int = 0
     discovered_record_ids: list[str] = field(default_factory=list)
+    discovered_records: list[dict[str, Any]] = field(default_factory=list)
     inspected_record_ids: list[str] = field(default_factory=list)
     patient_record_ids: list[str] = field(default_factory=list)
     patient_context: PatientContext = field(default_factory=PatientContext)
