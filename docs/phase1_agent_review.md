@@ -99,3 +99,5 @@ Agent 将 2026-02-02 门诊列出的用药状态标为 historical，并把后续
 这次单次 unseen observation 说明：冻结后的系统已经能迫使 Agent 显式表现“知道什么、还缺什么、下一步查什么”，并能阻止 preview 冒充已验证事实；但当前 Agent 仍会过早把索引层提示组织成 conflict，而且一次参数错误就终止整次运行。后者是可观察到的 runtime/agent 交互限制，不在 challenge 后回改。
 
 > 历史说明：最后一句描述的是 V1 决策。首次 challenge 后，项目按 `phase1-v2-recoverable-tool-errors` 新版本处理这一通用 runtime 问题；原始 V1 artifacts 和结论保持不变。
+
+V3 stopping contract 的 regression replay 与新 unseen stopping case 见 `docs/phase1_v3_stopping_review.md`。

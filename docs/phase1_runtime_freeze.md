@@ -73,3 +73,44 @@ A12E7F18858F068943BDFA166BABEFFCCEBD4D49C084CDE08F4A2DC6D427155E  tools.py
 新增 scripted coverage：一次可恢复错误后成功纠正、连续第三次可恢复错误停止、`patient_mismatch` 立即停止、unexpected tool failure 立即停止，以及错误调用不污染 RunState。
 
 对 `dizziness_longitudinal_001` 的 V2 运行属于 development/regression replay，不是新的 unseen challenge，也不会据该病例增加专属规则。
+
+## V3：`phase1-v3-stopping-contract`
+
+记录时间：2026-10-08（Asia/Hong_Kong）
+
+V3 针对 V2 regression replay `p1-run-f79dd2cbe3f0` 暴露的通用停止问题：Agent 已能分页、读取全文和更新 working context，但把未解决问题、未读索引和未翻完的信息继续视为补查义务，在 30 轮内没有主动 final。
+
+V3 只修改通用 prompt/context guidance：
+
+- 不需要解决所有 unresolved questions 才能结束，它们可以保留到 final。
+- 已读全文证据足以回答 task 核心问题时，应优先 final。
+- 只有可能实质改变当前 assessment 的缺失信息才值得继续查询。
+- 未读 index 不是读取义务。
+- `has_more=true` 不是翻完分页的义务，分页仍由当前 information need 驱动。
+- 是否足够完全由 Agent 判断；runtime 没有新增 clinical sufficiency rule、state machine、planner、completion tracker、工具或自动停止逻辑。
+
+### V3 SHA-256
+
+```text
+471AB690223807ED2CA2C4E8D6C3EFCF5CB57978B39DC42675EEBBA9C7D9B83F  __init__.py
+EB11266F97F7E1BDA306A7E878E343B8F91503DD3DE41478032B434217AEA3FC  cli.py
+E6192A4DAEEF2B50285845360079849037D0D090302A74E18D19DEBA16AD8643  model_client.py
+536F5D69906A40433E7289CBAA9495F3E58D417CE321B83B2F24A3E72CC8BF77  models.py
+99E2553F79A6D6107F8F1318FB5FE7384958F8AC6CF4A7355563ABA4BB3C29B6  runtime.py
+CC8FFD0073DAEBCD3B5FAA8E544C96DC639326346B98BE1BEACAFC529D8CCA37  storage.py
+A12E7F18858F068943BDFA166BABEFFCCEBD4D49C084CDE08F4A2DC6D427155E  tools.py
+```
+
+记录时测试结果：
+
+- Phase 1：22/22 通过。
+- Phase 0 回归：16/16 通过。
+
+新增测试只验证 stopping contract 的通用文字、结构和 decision ownership 存在，不断言临床答案、检索数量或停止轮次。
+
+### V3 observations
+
+- Dizziness regression replay `p1-run-de4bffa55f0b`：step 14 主动 final，只读取 3/40 条全文，保留 3 个 unresolved questions。
+- Freeze 后创建的 unseen stopping case `cough_stopping_001`：35 条记录；run `p1-run-ef4785479f90` 在 step 16 主动 final，只读取 5 条全文，停止时仍有 30 条未读，保留 2 个 unresolved questions。
+- 两个 final 的 evidence refs 均只包含 inspected records 或 patient record。
+- 上述运行后未修改 V3 runtime 文件；哈希保持不变。

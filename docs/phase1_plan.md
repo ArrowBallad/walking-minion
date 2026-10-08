@@ -48,6 +48,7 @@ Runtime 不编码正确检索顺序、临床结论、订单、未解决问题或
 
 - `phase1-v1-frozen-challenge`：首次 unseen challenge 使用的冻结版本。任何 `ToolError` 都立即终止运行。
 - `phase1-v2-recoverable-tool-errors`：首次 challenge 后形成的新版本，只增加 bounded recoverable tool-error feedback。既有病例、工具校验、临床判断与检索策略均未改变。
+- `phase1-v3-stopping-contract`：只增加通用 stopping contract。它提醒 Agent unresolved questions 可以保留、未读索引不是读取义务，是否继续取决于缺失信息能否实质改变当前 assessment。Runtime 不计算 sufficiency，也不自动停止。
 
 V2 的 recoverable allowlist：
 
@@ -60,6 +61,8 @@ V2 的 recoverable allowlist：
 这些错误的共同条件是：由模型输入触发、错误信息足以指导下一步、工具在抛错前不应改变 RunState。Runtime 会验证 state 未变化，把原始错误作为最近 tool result 回送，并在任一次成功工具调用后重置连续错误计数。
 
 `patient_mismatch` 是患者作用域安全错误；`unknown_tool` 表示工具接口不一致；`tool_failure`、错误期间 state mutation、未知错误码和其他内部异常可能涉及基础设施或不可判定副作用。这些错误不在 allowlist 中，继续 hard stop。
+
+V3 的 stopping contract 同时存在于 system prompt 和每轮结构化 `stopping_guidance` 中。它只表达以下通用原则：核心任务已有足够全文证据时优先 final；unresolved questions 可以保留；只有可能实质改变 assessment 的缺口才继续查询；未读 index 和 `has_more=true` 本身都不是继续搜索的充分理由。是否满足这些条件完全由 Agent 判断。
 
 ## 案例策略
 

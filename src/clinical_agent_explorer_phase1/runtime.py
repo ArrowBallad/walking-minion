@@ -12,7 +12,7 @@ from .storage import MemoryStore, RunArtifacts
 from .tools import ToolError, ToolRegistry
 
 
-RUNTIME_VERSION = "phase1-v2-recoverable-tool-errors"
+RUNTIME_VERSION = "phase1-v3-stopping-contract"
 
 RECOVERABLE_TOOL_ERROR_CODES = frozenset(
     {
@@ -23,6 +23,27 @@ RECOVERABLE_TOOL_ERROR_CODES = frozenset(
         "uninspected_evidence_refs",
     }
 )
+
+STOPPING_GUIDANCE = {
+    "finish_when_core_answer_supported": (
+        "如果现有已读全文证据已经足够回答当前 task 的核心问题，应优先结束并生成 final，"
+        "而不是为了完整性继续检索。"
+    ),
+    "unresolved_questions_may_remain": (
+        "不需要解决所有 unresolved questions 才能结束；仍然相关的不确定性可以原样保留到 final。"
+    ),
+    "continue_only_if_material": (
+        "只有当某个缺失信息可能实质改变当前 assessment 时，才值得继续查询。"
+    ),
+    "unread_index_is_not_obligation": "index 中存在未读记录，不等于必须全部读取。",
+    "pagination_is_need_driven": (
+        "has_more=true 不意味着必须翻完所有页面；只有当前 information need 需要继续搜索时才分页。"
+    ),
+    "decision_owner": (
+        "是否已有足够证据由 Agent 根据当前 task 判断；runtime 不计算 clinical sufficiency，"
+        "不强制工具顺序，也不替 Agent 决定停止。"
+    ),
+}
 
 
 SYSTEM_PROMPT = """你正在操作一个完全使用合成数据的纵向临床记录研究系统。
@@ -42,6 +63,12 @@ SYSTEM_PROMPT = """你正在操作一个完全使用合成数据的纵向临床�
 - 每轮只请求一个工具。这样该工具的原始结果会出现在下一轮有限 prompt 中，便于你决定是否更新 working context。
 - 每轮输入都是由 runtime 重新构建的，不是新的任务起点。先检查 current_step、retrieval_state 和 recent_tool_activity，不要无理由重复同一读取或查询。
 - 最近工具结果可能包含可纠正的参数或证据边界错误。请依据公开的 error code 和 message 自行决定修正参数、补查证据或放弃该动作；runtime 不会自动替你修改调用。
+- 不需要解决所有 unresolved questions 才能结束；仍然相关的不确定性可以原样保留到 final。
+- 如果现有已读全文证据已经足够回答当前 task 的核心问题，应优先结束并生成 final，而不是为了完整性继续检索。
+- 只有当某个缺失信息可能实质改变当前 assessment 时，才值得继续查询。
+- index 中存在未读记录，不等于必须全部读取。
+- has_more=true 不意味着必须翻完所有页面；只有当前 information need 需要继续搜索时才分页。
+- 是否已有足够证据由你根据当前 task 判断；runtime 不计算 clinical sufficiency，不强制工具顺序，也不替你决定停止。
 - 所有自然语言使用中文。
 
 当前 prompt 只包含 patient working context 和最近少量工具结果。更早的原始结果仍在 artifacts 中；如需重新查看，应再次查询或 get_record。
@@ -512,6 +539,7 @@ class ClinicalAgentRuntime:
                         "不相关记录无需纳入。该提示不指定应保存的内容。"
                     ),
                 },
+                "stopping_guidance": copy.deepcopy(STOPPING_GUIDANCE),
                 "actions": {
                     "proposed": state.proposed_actions,
                     "verified": state.verified_actions,

@@ -1,0 +1,21 @@
+{
+  "case_id": "cough_stopping_001_unseen_v3",
+  "created_at": "2026-10-08T07:12:36.840556Z",
+  "max_consecutive_recoverable_errors": 2,
+  "max_final_revisions": 2,
+  "max_prompt_bytes": 32000,
+  "max_steps": 30,
+  "max_tool_calls": 30,
+  "model": {
+    "adapter": "deepseek-chat-completions",
+    "base_url": "https://api.deepseek.com",
+    "model": "deepseek-chat",
+    "parallel_tool_calls": false,
+    "thinking": "disabled"
+  },
+  "patient_id": "COUGH-STOP-001",
+  "phase": "phase1",
+  "recent_result_limit": 2,
+  "run_id": "p1-run-ef4785479f90",
+  "runtime_version": "phase1-v3-stopping-contract"
+}
