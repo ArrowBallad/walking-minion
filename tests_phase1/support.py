@@ -77,6 +77,7 @@ def make_runtime(
     max_steps: int = 10,
     max_tool_calls: int = 20,
     recent_result_limit: int = 2,
+    max_consecutive_recoverable_errors: int = 2,
 ) -> tuple[ClinicalAgentRuntime, Path, Path]:
     database, memory, runs = write_fixture(root)
     runtime = ClinicalAgentRuntime(
@@ -87,6 +88,6 @@ def make_runtime(
         max_steps=max_steps,
         max_tool_calls=max_tool_calls,
         recent_result_limit=recent_result_limit,
+        max_consecutive_recoverable_errors=max_consecutive_recoverable_errors,
     )
     return runtime, memory, runs
-

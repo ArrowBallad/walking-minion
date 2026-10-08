@@ -12,6 +12,19 @@ from .storage import MemoryStore, RunArtifacts
 from .tools import ToolError, ToolRegistry
 
 
+RUNTIME_VERSION = "phase1-v2-recoverable-tool-errors"
+
+RECOVERABLE_TOOL_ERROR_CODES = frozenset(
+    {
+        "invalid_arguments",
+        "uninspected_context_ref",
+        "unknown_context_ref",
+        "context_limit",
+        "uninspected_evidence_refs",
+    }
+)
+
+
 SYSTEM_PROMPT = """你正在操作一个完全使用合成数据的纵向临床记录研究系统。
 
 目标不是一次性总结全部病历，而是根据任务逐步发现、读取和组织相关信息。
@@ -28,6 +41,7 @@ SYSTEM_PROMPT = """你正在操作一个完全使用合成数据的纵向临床�
 - create_order receipt 尚未验证；只有独立 get_order 读回匹配后才算 verified。
 - 每轮只请求一个工具。这样该工具的原始结果会出现在下一轮有限 prompt 中，便于你决定是否更新 working context。
 - 每轮输入都是由 runtime 重新构建的，不是新的任务起点。先检查 current_step、retrieval_state 和 recent_tool_activity，不要无理由重复同一读取或查询。
+- 最近工具结果可能包含可纠正的参数或证据边界错误。请依据公开的 error code 和 message 自行决定修正参数、补查证据或放弃该动作；runtime 不会自动替你修改调用。
 - 所有自然语言使用中文。
 
 当前 prompt 只包含 patient working context 和最近少量工具结果。更早的原始结果仍在 artifacts 中；如需重新查看，应再次查询或 get_record。
@@ -112,6 +126,7 @@ class ClinicalAgentRuntime:
         recent_result_limit: int = 2,
         max_prompt_bytes: int = 32_000,
         max_final_revisions: int = 2,
+        max_consecutive_recoverable_errors: int = 2,
     ) -> None:
         if min(
             max_steps,
@@ -119,6 +134,7 @@ class ClinicalAgentRuntime:
             recent_result_limit,
             max_prompt_bytes,
             max_final_revisions,
+            max_consecutive_recoverable_errors,
         ) < 1:
             raise ValueError("runtime limits 必须为正数")
         self.client = client
@@ -130,6 +146,7 @@ class ClinicalAgentRuntime:
         self.recent_result_limit = recent_result_limit
         self.max_prompt_bytes = max_prompt_bytes
         self.max_final_revisions = max_final_revisions
+        self.max_consecutive_recoverable_errors = max_consecutive_recoverable_errors
 
     def run(
         self,
@@ -147,6 +164,7 @@ class ClinicalAgentRuntime:
             actual_run_id,
             {
                 "phase": "phase1",
+                "runtime_version": RUNTIME_VERSION,
                 "case_id": case_id,
                 "patient_id": patient_id,
                 "max_steps": self.max_steps,
@@ -154,6 +172,7 @@ class ClinicalAgentRuntime:
                 "recent_result_limit": self.recent_result_limit,
                 "max_prompt_bytes": self.max_prompt_bytes,
                 "max_final_revisions": self.max_final_revisions,
+                "max_consecutive_recoverable_errors": self.max_consecutive_recoverable_errors,
                 "model": model_metadata or {},
             },
         )
@@ -165,6 +184,7 @@ class ClinicalAgentRuntime:
         tool_call_count = 0
         final_revision_count = 0
         decision_revision_count = 0
+        consecutive_recoverable_errors = 0
         artifacts.save_state(state)
         artifacts.event(
             run_id=state.run_id,
@@ -339,8 +359,73 @@ class ClinicalAgentRuntime:
                     )
                     return state
                 for call in decision.tool_calls:
-                    result = self._handle_tool_call(state, call, artifacts)
                     tool_call_count += 1
+                    state_before_call = copy.deepcopy(state)
+                    try:
+                        result = self._handle_tool_call(state, call, artifacts)
+                    except ToolError as exc:
+                        if exc.code not in RECOVERABLE_TOOL_ERROR_CODES:
+                            raise
+                        if state.to_dict() != state_before_call.to_dict():
+                            state.__dict__.clear()
+                            state.__dict__.update(copy.deepcopy(state_before_call.__dict__))
+                            raise RuntimeFailure(
+                                "tool_error_state_mutation",
+                                "可恢复工具错误发生时 RunState 被修改；已恢复快照并停止。",
+                            ) from exc
+
+                        consecutive_recoverable_errors += 1
+                        error_result = exc.as_dict()
+                        recent_results.append(
+                            {
+                                "call_id": call.call_id,
+                                "tool_name": call.name,
+                                "information_need": call.arguments.get("information_need"),
+                                "result": error_result,
+                                "raw_result_ref": f"tool_calls.jsonl#{call.call_id}",
+                            }
+                        )
+                        while len(recent_results) > self.recent_result_limit:
+                            recent_results.pop(0)
+                            omitted_results += 1
+                        activity = self._activity_view(call, error_result)
+                        activity["step"] = state.step
+                        recent_activity.append(activity)
+                        if len(recent_activity) > 12:
+                            recent_activity.pop(0)
+                        artifacts.event(
+                            run_id=state.run_id,
+                            step=state.step,
+                            event_type="recoverable_tool_error",
+                            details={
+                                "call_id": call.call_id,
+                                "tool_name": call.name,
+                                "error": error_result["error"],
+                                "consecutive_count": consecutive_recoverable_errors,
+                                "max_consecutive_errors": self.max_consecutive_recoverable_errors,
+                                "state_unchanged": True,
+                            },
+                        )
+                        if (
+                            consecutive_recoverable_errors
+                            > self.max_consecutive_recoverable_errors
+                        ):
+                            self._stop(
+                                state,
+                                artifacts,
+                                "stopped",
+                                "recoverable_tool_error_limit",
+                                (
+                                    "连续可恢复工具错误超过上限 "
+                                    f"{self.max_consecutive_recoverable_errors}；"
+                                    f"最后错误为 {exc.code}: {exc.message}"
+                                ),
+                            )
+                            return state
+                        artifacts.save_state(state)
+                        break
+
+                    consecutive_recoverable_errors = 0
                     recent_results.append(
                         {
                             "call_id": call.call_id,
@@ -473,6 +558,9 @@ class ClinicalAgentRuntime:
             "information_need": call.arguments.get("information_need"),
             "ok": result.get("ok"),
         }
+        if result.get("ok") is False and result.get("error"):
+            activity["error"] = copy.deepcopy(result["error"])
+            return activity
         if call.name == "search_records":
             activity.update(
                 {

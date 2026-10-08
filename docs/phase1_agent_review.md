@@ -7,7 +7,7 @@
 - 公开 development case：`cases/phase1_development/gi_longitudinal_001/`，38 条记录。
 - Runtime freeze：`docs/phase1_runtime_freeze.md`。
 - Freeze 后创建的 unseen challenge：`cases/phase1_challenge/dizziness_longitudinal_001/`，40 条记录。
-- Challenge 运行后未修改 `src/clinical_agent_explorer_phase1/`。
+- 本节记录 V1 首次 challenge 当时的边界。之后仅针对通用 ToolError 终止策略形成了新的 V2 runtime；V2 replay 见 `docs/phase1_v2_regression_review.md`。
 
 API 请求 metadata 记录的模型为 `deepseek-chat`、thinking disabled、`parallel_tool_calls=false`；provider 在逐次响应中自报模型名为 `deepseek-flash`。两者均原样保留，本文不推断 provider 内部路由。
 
@@ -97,3 +97,5 @@ Agent 将 2026-02-02 门诊列出的用药状态标为 historical，并把后续
 本次没有 clinical final，不是因为达到 iteration 或 tool-call limit，而是因为确定性的 context 参数校验失败。错误被写入原始 tool result、state event 和 `final.md`，状态保持可检查；此前已经确认的 7 条 facts 没有被损坏。
 
 这次单次 unseen observation 说明：冻结后的系统已经能迫使 Agent 显式表现“知道什么、还缺什么、下一步查什么”，并能阻止 preview 冒充已验证事实；但当前 Agent 仍会过早把索引层提示组织成 conflict，而且一次参数错误就终止整次运行。后者是可观察到的 runtime/agent 交互限制，不在 challenge 后回改。
+
+> 历史说明：最后一句描述的是 V1 决策。首次 challenge 后，项目按 `phase1-v2-recoverable-tool-errors` 新版本处理这一通用 runtime 问题；原始 V1 artifacts 和结论保持不变。

@@ -1,4 +1,6 @@
-# Phase 1 runtime freeze
+# Phase 1 runtime versions
+
+## V1：`phase1-v1-frozen-challenge`
 
 冻结时间：2026-10-08（Asia/Hong_Kong）
 
@@ -32,3 +34,42 @@ A12E7F18858F068943BDFA166BABEFFCCEBD4D49C084CDE08F4A2DC6D427155E  tools.py
 - `p1-run-4d845f2ec884` 因 conflict 只有一条已读证据而被参数校验干净停止。
 
 上述运行用于修复或验证通用 plumbing。Challenge 创建及运行后，不再修改这些冻结文件；如有修改，后续结果只能标为探索性运行。
+
+## V2：`phase1-v2-recoverable-tool-errors`
+
+记录时间：2026-10-08（Asia/Hong_Kong）
+
+V2 是首次 unseen challenge `p1-run-8e583d9e9e0c` 之后产生的新 Phase 1 runtime version。该 run 暴露出一个通用问题：模型可根据公开错误修正的工具参数/证据错误仍会立即终止整个运行。
+
+V2 只增加 bounded recoverable tool-error feedback：
+
+- 不修改任何工具校验规则。
+- 错误工具调用的原始 input/output、code 与 message 继续完整写入 artifacts。
+- Allowlist 内的错误在确认 RunState 未改变后进入下一轮最近 tool result。
+- Runtime 不修改参数、不自动检索、不替模型选择下一步。
+- 连续错误上限为 2；第三次以 `recoverable_tool_error_limit` 停止。
+- 任一次成功工具调用重置连续错误计数。
+- `patient_mismatch`、`unknown_tool`、unexpected/internal failure、错误时 state mutation 和未分类错误仍 hard stop。
+
+Recoverable allowlist 为：`invalid_arguments`、`uninspected_context_ref`、`unknown_context_ref`、`context_limit`、`uninspected_evidence_refs`。分类依据详见 `docs/phase1_plan.md`。
+
+### V2 SHA-256
+
+```text
+471AB690223807ED2CA2C4E8D6C3EFCF5CB57978B39DC42675EEBBA9C7D9B83F  __init__.py
+EB11266F97F7E1BDA306A7E878E343B8F91503DD3DE41478032B434217AEA3FC  cli.py
+E6192A4DAEEF2B50285845360079849037D0D090302A74E18D19DEBA16AD8643  model_client.py
+536F5D69906A40433E7289CBAA9495F3E58D417CE321B83B2F24A3E72CC8BF77  models.py
+CE70F2F023FD84DBA60290E7A4A8EBD452B57BF7B46735FC4E09F22B0A72F188  runtime.py
+CC8FFD0073DAEBCD3B5FAA8E544C96DC639326346B98BE1BEACAFC529D8CCA37  storage.py
+A12E7F18858F068943BDFA166BABEFFCCEBD4D49C084CDE08F4A2DC6D427155E  tools.py
+```
+
+记录时测试结果：
+
+- Phase 1：21/21 通过。
+- Phase 0 回归：16/16 通过。
+
+新增 scripted coverage：一次可恢复错误后成功纠正、连续第三次可恢复错误停止、`patient_mismatch` 立即停止、unexpected tool failure 立即停止，以及错误调用不污染 RunState。
+
+对 `dizziness_longitudinal_001` 的 V2 运行属于 development/regression replay，不是新的 unseen challenge，也不会据该病例增加专属规则。

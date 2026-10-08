@@ -39,9 +39,28 @@ Runtime 不编码正确检索顺序、临床结论、订单、未解决问题或
 - Working context 中的事实和冲突只能引用已读全文记录；冲突至少需要两条已读证据。
 - Memory 不自动进入 inspected evidence 集合。
 - Receipt 不是 verified write；匹配的独立 read-back 才改变验证状态。
-- 参数错误、tool error、无效 model output、iteration limit 和 tool-call limit 都能干净停止。
+- 工具校验不放宽；允许模型依据公开错误自行修正的校验错误会有界反馈，安全、作用域和基础设施错误仍立即停止。
+- 连续可恢复工具错误默认最多 2 次；第三次以 `recoverable_tool_error_limit` 干净停止。
+- 无效 model output、iteration limit 和 tool-call limit 都能干净停止。
 - 无效 final 最多反馈两次供 Agent 修正，证据边界不会因此放宽。
+
+## Runtime versions 与工具错误分类
+
+- `phase1-v1-frozen-challenge`：首次 unseen challenge 使用的冻结版本。任何 `ToolError` 都立即终止运行。
+- `phase1-v2-recoverable-tool-errors`：首次 challenge 后形成的新版本，只增加 bounded recoverable tool-error feedback。既有病例、工具校验、临床判断与检索策略均未改变。
+
+V2 的 recoverable allowlist：
+
+- `invalid_arguments`：参数形状、字段和值不满足公开 schema；发生在状态写入前，模型可以修正或放弃。
+- `uninspected_context_ref`：working fact/conflict 引用了未读全文记录；模型可以补读或移除该陈述。
+- `unknown_context_ref`：相关记录引用尚未被发现；模型可以检索或移除引用。
+- `context_limit`：有限 working context 超出公开大小边界；模型可以缩减快照。
+- `uninspected_evidence_refs`：写操作引用未读全文证据；模型可以补读或放弃写入。
+
+这些错误的共同条件是：由模型输入触发、错误信息足以指导下一步、工具在抛错前不应改变 RunState。Runtime 会验证 state 未变化，把原始错误作为最近 tool result 回送，并在任一次成功工具调用后重置连续错误计数。
+
+`patient_mismatch` 是患者作用域安全错误；`unknown_tool` 表示工具接口不一致；`tool_failure`、错误期间 state mutation、未知错误码和其他内部异常可能涉及基础设施或不可判定副作用。这些错误不在 allowlist 中，继续 hard stop。
 
 ## 案例策略
 
-公开 development case 可以用于修复与任何病例无关的接口和上下文问题。Runtime 冻结后只创建一个中文 unseen challenge case，不提供 private gold、rubric 或自动临床 evaluator。Challenge 后不再修改冻结 runtime；只根据 trace 分析检索、工作认知、时间处理、冲突处理、停止策略和失败模式。
+公开 development case 可以用于修复与任何病例无关的接口和上下文问题。首次 runtime 冻结后只创建了一个中文 unseen challenge case，不提供 private gold、rubric 或自动临床 evaluator。首次 challenge 暴露通用 ToolError 过硬问题后形成 V2；对同一病例的后续运行只能称为 development/regression replay，不能再称为 unseen challenge。
