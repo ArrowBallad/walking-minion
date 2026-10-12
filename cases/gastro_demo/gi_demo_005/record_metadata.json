@@ -1,0 +1,20 @@
+{
+  "gi-demo-005-rec-001": {"available_at": "2024-11-18T10:00:00Z"},
+  "gi-demo-005-rec-002": {"available_at": "2024-11-18T10:30:00Z", "exam_type": "biliary_pain_labs"},
+  "gi-demo-005-rec-003": {"available_at": "2024-11-18T10:40:00Z", "exam_type": "right_upper_quadrant_ultrasound", "workflow_id": "outpatient-ultrasound-005", "workflow_stage": "requested_and_scheduled"},
+  "gi-demo-005-rec-004": {"available_at": "2024-11-21T08:30:00Z", "exam_type": "right_upper_quadrant_ultrasound", "workflow_id": "outpatient-ultrasound-005", "workflow_stage": "procedure_completed"},
+  "gi-demo-005-rec-005": {"available_at": "2024-11-21T10:00:00Z", "exam_type": "right_upper_quadrant_ultrasound", "workflow_id": "outpatient-ultrasound-005", "workflow_stage": "report_final", "keywords": ["右上腹超声", "胆囊", "最终报告"]},
+  "gi-demo-005-rec-006": {"available_at": "2024-11-22T09:15:00Z", "workflow_id": "surgery-referral-005", "workflow_stage": "referral_requested"},
+  "gi-demo-005-rec-007": {"available_at": "2024-12-06T11:00:00Z", "workflow_id": "surgery-referral-005", "workflow_stage": "elective_surgery_planned"},
+  "gi-demo-005-rec-008": {"available_at": "2025-01-12T06:50:00Z", "workflow_id": "acute-admission-005", "workflow_stage": "emergency_presentation"},
+  "gi-demo-005-rec-009": {"available_at": "2025-01-12T07:20:00Z", "exam_type": "acute_pancreatitis_labs", "workflow_id": "acute-admission-005", "workflow_stage": "initial_labs_final"},
+  "gi-demo-005-rec-010": {"available_at": "2025-01-12T08:35:00Z", "exam_type": "right_upper_quadrant_ultrasound", "workflow_id": "acute-admission-005", "workflow_stage": "ultrasound_report_final"},
+  "gi-demo-005-rec-011": {"available_at": "2025-01-12T10:00:00Z", "workflow_id": "acute-admission-005", "workflow_stage": "inpatient_assessment"},
+  "gi-demo-005-rec-012": {"available_at": "2025-01-12T10:20:00Z", "exam_type": "mrcp", "workflow_id": "mrcp-005", "workflow_stage": "requested"},
+  "gi-demo-005-rec-013": {"available_at": "2025-01-12T16:00:00Z", "exam_type": "mrcp", "workflow_id": "mrcp-005", "workflow_stage": "procedure_completed"},
+  "gi-demo-005-rec-014": {"available_at": "2025-01-12T18:10:00Z", "exam_type": "mrcp", "workflow_id": "mrcp-005", "workflow_stage": "report_final", "keywords": ["MRCP", "胆总管", "最终报告"]},
+  "gi-demo-005-rec-015": {"available_at": "2025-01-13T09:00:00Z", "workflow_id": "acute-admission-005", "workflow_stage": "inpatient_progress_and_ercp_decision"},
+  "gi-demo-005-rec-016": {"available_at": "2025-01-14T10:30:00Z", "exam_type": "laparoscopic_cholecystectomy", "workflow_id": "index-admission-cholecystectomy-005", "workflow_stage": "procedure_completed"},
+  "gi-demo-005-rec-017": {"available_at": "2025-01-17T14:00:00Z", "exam_type": "gallbladder_histopathology", "workflow_id": "index-admission-cholecystectomy-005", "workflow_stage": "pathology_final"},
+  "gi-demo-005-rec-018": {"available_at": "2025-01-28T09:30:00Z", "workflow_id": "index-admission-cholecystectomy-005", "workflow_stage": "postoperative_followup"}
+}

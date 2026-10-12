@@ -185,7 +185,7 @@ class RuntimeFlowTests(unittest.TestCase):
             events = read_jsonl(runs / "final-revision" / "state_events.jsonl")
             self.assertTrue(any(event["event_type"] == "final_rejected" for event in events))
 
-    def test_multiple_tool_calls_are_rejected_before_execution(self) -> None:
+    def test_multiple_tool_calls_execute_in_order_and_next_prompt_sees_batch(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             multi = AgentDecision(
                 content="尝试批量读取。",
@@ -208,35 +208,47 @@ class RuntimeFlowTests(unittest.TestCase):
                             "information_need": "读取第二条。",
                         },
                     ),
+                    ToolCall(
+                        call_id="c",
+                        name="get_record",
+                        arguments={
+                            "patient_id": "P1",
+                            "record_id": "rec-1",
+                            "information_need": "读取第三条。",
+                        },
+                    ),
+                    ToolCall(
+                        call_id="d",
+                        name="get_record",
+                        arguments={
+                            "patient_id": "P1",
+                            "record_id": "rec-6",
+                            "information_need": "读取第四条。",
+                        },
+                    ),
                 ],
             )
-            client = ScriptedClient(
-                [
-                    multi,
-                    call(
-                        "single",
-                        "get_record",
-                        patient_id="P1",
-                        record_id="rec-5",
-                        information_need="按原子契约只读取一条。",
-                    ),
-                    final("rec-5"),
-                ]
-            )
+            def verify_batch(messages, _tools):
+                payload = json.loads(messages[1]["content"])
+                results = payload["recent_tool_results"]
+                self.assertEqual(["a", "b", "c", "d"], [item["call_id"] for item in results])
+                self.assertEqual([1, 2, 3, 4], [item["batch_position"] for item in results])
+                self.assertEqual(
+                    ["rec-3", "rec-5", "rec-1", "rec-6"],
+                    [item["result"]["record"]["record_id"] for item in results],
+                )
+                return final("rec-3", "rec-5", "rec-1", "rec-6")
+
+            client = ScriptedClient([multi, verify_batch])
             runtime, _, runs = make_runtime(Path(directory), client)
             state = runtime.run(
                 patient_id="P1", task="审阅。", case_id="test", run_id="atomic"
             )
 
             self.assertEqual("complete", state.status)
-            self.assertEqual(["rec-5"], state.inspected_record_ids)
+            self.assertEqual(["rec-3", "rec-5", "rec-1", "rec-6"], state.inspected_record_ids)
             calls = read_jsonl(runs / "atomic" / "tool_calls.jsonl")
-            self.assertEqual(["single"], [item["call_id"] for item in calls])
-            retry_payload = json.loads(client.contexts[1][1]["content"])
-            self.assertEqual(
-                "multiple_tool_calls_not_allowed",
-                retry_payload["recent_tool_results"][-1]["result"]["error"]["code"],
-            )
+            self.assertEqual(["a", "b", "c", "d"], [item["call_id"] for item in calls])
 
     def test_receipt_requires_matching_read_back(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

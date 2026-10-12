@@ -1,0 +1,32 @@
+{
+  "artifact_dir": "runs\\quick_comparison\\quick-comparison-v1\\full_context\\workflow_status_001",
+  "case_id": "workflow_status_001",
+  "method": "full_context",
+  "model": "deepseek-flash",
+  "model_calls": 1,
+  "record_ids_exposed": [
+    "wf-rec-001",
+    "wf-rec-002",
+    "wf-rec-003",
+    "wf-rec-004",
+    "wf-rec-005",
+    "wf-rec-006",
+    "wf-rec-007",
+    "wf-rec-008",
+    "wf-rec-009"
+  ],
+  "records_exposed": 9,
+  "records_total": 9,
+  "status": "complete",
+  "tool_calls": 0,
+  "usage": {
+    "completion_tokens": 448,
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1613,
+    "prompt_tokens": 1613,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 2061
+  }
+}

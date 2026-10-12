@@ -1,0 +1,39 @@
+{
+  "method": "BM25",
+  "records": [
+    {
+      "record_id": "dz-rec-014",
+      "score": 83.59431084390165
+    },
+    {
+      "record_id": "dz-rec-020",
+      "score": 74.57071453577339
+    },
+    {
+      "record_id": "dz-rec-038",
+      "score": 67.2941727471915
+    },
+    {
+      "record_id": "dz-rec-024",
+      "score": 61.45733805524281
+    },
+    {
+      "record_id": "dz-rec-001",
+      "score": 59.225055201306965
+    },
+    {
+      "record_id": "dz-rec-039",
+      "score": 54.65335208276752
+    },
+    {
+      "record_id": "dz-rec-027",
+      "score": 53.908688454456396
+    },
+    {
+      "record_id": "dz-rec-023",
+      "score": 53.47462282469177
+    }
+  ],
+  "tokenizer": "lowercase alphanumeric words plus CJK unigrams and bigrams",
+  "top_k": 8
+}

@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\n  \"final_text\": \"针对患者 WF-SHORT-001（1972 年出生，女性），2026 年合成记录中三项检查的工作流状态如下：\\n\\n1. 胸部 X 线：已申请（wf-rec-002，2026-03-01 09:15，拟评估发热和咳嗽）；已实际执行（wf-rec-003，2026-03-02 08:30 完成并提交放射科阅片）；已产生最终报告（wf-rec-004，2026-03-02 12:10）。报告结果：正侧位胸片示心影大小正常，双肺未见局灶性实变或胸腔积液，结论为未见急性心肺异常。\\n\\n2. 尿培养：已申请（wf-rec-005，2026-03-01 09:16）；标本已采集并送检（wf-rec-006，2026-03-01 10:00）；但实验室因标本容器标签与申请信息不一致而拒收，检验已取消（wf-rec-007，2026-03-01 13:20），本次未进行培养，未产生可解释的微生物学结果，如仍有需要须重新采集。\\n\\n3. 超声心动图：仅已申请、目前待排期（wf-rec-008，2026-03-03 09:00）。截至最后一条记录，没有操作完成记录，也没有超声心动图报告，即尚未执行、尚未出结果。\\n\\n说明：本回答仅为记录综述，未创建任何订单或写入动作。\",\n  \"evidence_refs\": [\n    \"wf-rec-001\",\n    \"wf-rec-002\",\n    \"wf-rec-003\",\n    \"wf-rec-004\",\n    \"wf-rec-005\",\n    \"wf-rec-006\",\n    \"wf-rec-007\",\n    \"wf-rec-008\"\n  ]\n}",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1791598371,
+  "id": "374519b9-a51b-4f28-9cb0-1645064f02b2",
+  "model": "deepseek-flash",
+  "object": "chat.completion",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "usage": {
+    "completion_tokens": 407,
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1471,
+    "prompt_tokens": 1471,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1878
+  }
+}

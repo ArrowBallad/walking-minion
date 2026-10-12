@@ -47,7 +47,7 @@ class DeepSeekClient:
                 "messages": messages,
                 "tools": tools,
                 "tool_choice": "auto",
-                "parallel_tool_calls": False,
+                "parallel_tool_calls": True,
                 "thinking": {"type": "disabled"},
             }
         ).encode("utf-8")

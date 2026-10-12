@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 from datetime import datetime
 from typing import Any
 
@@ -8,13 +9,23 @@ from .storage import MockDatabase
 
 
 class ToolError(Exception):
-    def __init__(self, code: str, message: str) -> None:
+    def __init__(
+        self, code: str, message: str, *, details: dict[str, Any] | None = None
+    ) -> None:
         super().__init__(message)
         self.code = code
         self.message = message
+        self.details = copy.deepcopy(details or {})
 
     def as_dict(self) -> dict[str, Any]:
-        return {"ok": False, "error": {"code": self.code, "message": self.message}}
+        return {
+            "ok": False,
+            "error": {
+                "code": self.code,
+                **copy.deepcopy(self.details),
+                "message": self.message,
+            },
+        }
 
 
 def _context_properties() -> dict[str, Any]:
@@ -90,6 +101,8 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
                     "information_need": {"type": "string"},
                     "record_type": {"type": "string"},
                     "keyword": {"type": "string"},
+                    "exam_type": {"type": "string"},
+                    "workflow_id": {"type": "string"},
                     "from_time": {"type": "string"},
                     "to_time": {"type": "string"},
                     "limit": {"type": "integer", "minimum": 1, "maximum": 20},
@@ -122,24 +135,56 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         "function": {
             "name": "update_working_context",
             "description": (
-                "用完整快照更新本次任务的有限 patient working context。known_facts 和 conflicts "
-                "只能引用已经 get_record 读取全文的记录；它不是患者数据库。"
+                "对本次任务的有限 working context 做增量更新。add/update/supersede finding "
+                "以及 add/resolve question 都使用稳定 entry_id；未涉及的条目保持不变。"
+                "resolve_question 只能使用当前 patient_context.question_states 中真实存在的 "
+                "working-context entry_id，不能使用 patient memory 的 memory_id。"
+                "为隔离失败风险，应先单独提交 add_finding，再在后续调用中提交问题状态迁移；"
+                "不要在同一次提交中混合新事实与 resolve_question。"
+                "事实和问题解决证据只能引用本次运行已 get_record 的记录。"
             ),
             "parameters": {
                 "type": "object",
                 "properties": {
                     "patient_id": {"type": "string"},
                     "information_need": {"type": "string"},
-                    **_context_properties(),
+                    "operations": {
+                        "type": "array",
+                        "maxItems": 12,
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "op": {
+                                    "type": "string",
+                                    "enum": [
+                                        "add_finding",
+                                        "update_finding",
+                                        "supersede_finding",
+                                        "add_question",
+                                        "resolve_question",
+                                    ],
+                                },
+                                "entry_id": {"type": "string"},
+                                "replacement_entry_id": {"type": "string"},
+                                "statement": {"type": "string"},
+                                "text": {"type": "string"},
+                                "resolution": {"type": "string"},
+                                "evidence_refs": {
+                                    "type": "array",
+                                    "items": {"type": "string"},
+                                },
+                                "clinical_time": {"type": ["string", "null"]},
+                                "temporal_status": {
+                                    "type": "string",
+                                    "enum": ["current", "historical", "superseded", "unknown"],
+                                },
+                            },
+                            "required": ["op", "entry_id"],
+                            "additionalProperties": False,
+                        },
+                    },
                 },
-                "required": [
-                    "patient_id",
-                    "information_need",
-                    "known_facts",
-                    "unresolved_questions",
-                    "conflicts",
-                    "relevant_record_refs",
-                ],
+                "required": ["patient_id", "information_need", "operations"],
                 "additionalProperties": False,
             },
         },
@@ -196,6 +241,8 @@ _ALLOWED_FIELDS = {
         "information_need",
         "record_type",
         "keyword",
+        "exam_type",
+        "workflow_id",
         "from_time",
         "to_time",
         "limit",
@@ -209,6 +256,7 @@ _ALLOWED_FIELDS = {
         "unresolved_questions",
         "conflicts",
         "relevant_record_refs",
+        "operations",
     },
     "create_order": {
         "patient_id",
@@ -274,7 +322,7 @@ def _validate_context(arguments: dict[str, Any], state: RunState) -> PatientCont
             raise ToolError("invalid_arguments", f"known_facts[{index}].clinical_time 无效")
         if temporal_status not in {"current", "historical", "superseded", "unknown"}:
             raise ToolError("invalid_arguments", f"known_facts[{index}].temporal_status 无效")
-        validated_facts.append(dict(fact))
+        validated_facts.append({"entry_id": f"legacy-finding-{index + 1:03d}", **fact})
 
     validated_conflicts = []
     for index, conflict in enumerate(conflicts):
@@ -303,9 +351,272 @@ def _validate_context(arguments: dict[str, Any], state: RunState) -> PatientCont
     return PatientContext(
         known_facts=validated_facts,
         unresolved_questions=questions,
+        question_states=[
+            {
+                "entry_id": f"legacy-question-{index + 1:03d}",
+                "text": question,
+                "status": "active",
+                "evidence_refs": [],
+            }
+            for index, question in enumerate(questions)
+        ],
         conflicts=validated_conflicts,
         relevant_record_refs=list(dict.fromkeys(relevant)),
     )
+
+
+def _validate_entry_id(value: Any, field: str) -> str:
+    if not isinstance(value, str) or not value.strip() or len(value) > 100:
+        raise ToolError("invalid_arguments", f"{field} 必须是 1–100 字符的非空字符串")
+    return value
+
+
+def _validate_incremental_refs(
+    value: Any,
+    *,
+    field: str,
+    inspected: set[str],
+    allow_empty: bool,
+) -> list[str]:
+    refs = _string_list(value, field, maximum=12)
+    if not allow_empty and not refs:
+        raise ToolError("invalid_arguments", f"{field} 不能为空")
+    unavailable = sorted(set(refs) - inspected)
+    if unavailable:
+        raise ToolError(
+            "uninspected_context_ref",
+            f"{field} 引用了未读取全文的记录：{', '.join(unavailable)}",
+        )
+    return list(dict.fromkeys(refs))
+
+
+def _validate_finding_fields(
+    operation: dict[str, Any], *, inspected: set[str], prefix: str
+) -> dict[str, Any]:
+    statement = operation.get("statement")
+    if not isinstance(statement, str) or not statement.strip() or len(statement) > 500:
+        raise ToolError("context_limit", f"{prefix}.statement 无效")
+    refs = _validate_incremental_refs(
+        operation.get("evidence_refs"),
+        field=f"{prefix}.evidence_refs",
+        inspected=inspected,
+        allow_empty=False,
+    )
+    clinical_time = operation.get("clinical_time")
+    if clinical_time is not None and not isinstance(clinical_time, str):
+        raise ToolError("invalid_arguments", f"{prefix}.clinical_time 无效")
+    temporal_status = operation.get("temporal_status")
+    if temporal_status not in {"current", "historical", "superseded", "unknown"}:
+        raise ToolError("invalid_arguments", f"{prefix}.temporal_status 无效")
+    return {
+        "statement": statement,
+        "evidence_refs": refs,
+        "clinical_time": clinical_time,
+        "temporal_status": temporal_status,
+    }
+
+
+def _apply_incremental_context_operation(
+    *,
+    context: PatientContext,
+    operation: Any,
+    index: int,
+    inspected: set[str],
+    resolvable_question_ids: set[str],
+) -> dict[str, Any]:
+    prefix = f"operations[{index}]"
+    if not isinstance(operation, dict):
+        raise ToolError("invalid_arguments", f"{prefix} 必须是对象")
+    op = operation.get("op")
+    entry_id = _validate_entry_id(operation.get("entry_id"), f"{prefix}.entry_id")
+    fact_index = next(
+        (
+            item_index
+            for item_index, item in enumerate(context.known_facts)
+            if item.get("entry_id") == entry_id
+        ),
+        None,
+    )
+    question_index = next(
+        (
+            item_index
+            for item_index, item in enumerate(context.question_states)
+            if item.get("entry_id") == entry_id
+        ),
+        None,
+    )
+
+    if op == "add_finding":
+        if fact_index is not None or question_index is not None:
+            raise ToolError("invalid_arguments", f"entry_id 已存在：{entry_id}")
+        fields = _validate_finding_fields(
+            operation, inspected=inspected, prefix=prefix
+        )
+        context.known_facts.append({"entry_id": entry_id, **fields})
+    elif op == "update_finding":
+        if fact_index is None:
+            raise ToolError("invalid_arguments", f"未知 finding entry_id：{entry_id}")
+        fields = _validate_finding_fields(
+            operation, inspected=inspected, prefix=prefix
+        )
+        context.known_facts[fact_index] = {"entry_id": entry_id, **fields}
+    elif op == "supersede_finding":
+        if fact_index is None:
+            raise ToolError("invalid_arguments", f"未知 finding entry_id：{entry_id}")
+        replacement_id = _validate_entry_id(
+            operation.get("replacement_entry_id"),
+            f"{prefix}.replacement_entry_id",
+        )
+        if any(
+            item.get("entry_id") == replacement_id for item in context.known_facts
+        ):
+            raise ToolError(
+                "invalid_arguments",
+                f"replacement_entry_id 已存在：{replacement_id}",
+            )
+        fields = _validate_finding_fields(
+            operation, inspected=inspected, prefix=prefix
+        )
+        context.known_facts[fact_index]["temporal_status"] = "superseded"
+        context.known_facts.append(
+            {"entry_id": replacement_id, "supersedes": entry_id, **fields}
+        )
+    elif op == "add_question":
+        if fact_index is not None or question_index is not None:
+            raise ToolError("invalid_arguments", f"entry_id 已存在：{entry_id}")
+        text = operation.get("text")
+        if not isinstance(text, str) or not text.strip() or len(text) > 500:
+            raise ToolError("context_limit", f"{prefix}.text 无效")
+        refs = _validate_incremental_refs(
+            operation.get("evidence_refs", []),
+            field=f"{prefix}.evidence_refs",
+            inspected=inspected,
+            allow_empty=True,
+        )
+        context.question_states.append(
+            {
+                "entry_id": entry_id,
+                "text": text,
+                "status": "active",
+                "evidence_refs": refs,
+            }
+        )
+    elif op == "resolve_question":
+        if entry_id not in resolvable_question_ids or question_index is None:
+            raise ToolError(
+                "unknown_working_question_id",
+                f"当前 working context 中不存在可解决的 question：{entry_id}",
+            )
+        if context.question_states[question_index].get("status") != "active":
+            raise ToolError(
+                "inactive_working_question_id",
+                f"working context question 已非 active：{entry_id}",
+            )
+        resolution = operation.get("resolution")
+        if not isinstance(resolution, str) or not resolution.strip() or len(resolution) > 500:
+            raise ToolError("context_limit", f"{prefix}.resolution 无效")
+        refs = _validate_incremental_refs(
+            operation.get("evidence_refs"),
+            field=f"{prefix}.evidence_refs",
+            inspected=inspected,
+            allow_empty=False,
+        )
+        context.question_states[question_index].update(
+            {
+                "status": "resolved",
+                "resolution": resolution,
+                "resolution_evidence_refs": refs,
+            }
+        )
+    else:
+        raise ToolError("invalid_arguments", f"{prefix}.op 无效")
+    return {"op": op, "entry_id": entry_id}
+
+
+def _validate_incremental_context(
+    arguments: dict[str, Any], state: RunState
+) -> tuple[PatientContext, list[dict[str, Any]]]:
+    operations = arguments.get("operations")
+    if not isinstance(operations, list) or not operations or len(operations) > 12:
+        raise ToolError("context_limit", "operations 必须是 1–12 项的列表")
+    context = copy.deepcopy(state.patient_context)
+    inspected = set(state.inspected_record_ids)
+    valid_question_ids = [
+        str(item["entry_id"])
+        for item in state.patient_context.question_states
+        if item.get("status") == "active" and item.get("entry_id")
+    ]
+    applied: list[dict[str, Any]] = []
+
+    for index, operation in enumerate(operations):
+        try:
+            applied.append(
+                _apply_incremental_context_operation(
+                    context=context,
+                    operation=operation,
+                    index=index,
+                    inspected=inspected,
+                    resolvable_question_ids=set(valid_question_ids),
+                )
+            )
+        except ToolError as exc:
+            target_id = (
+                operation.get("entry_id") if isinstance(operation, dict) else None
+            )
+            code = exc.code
+            message = exc.message
+            scope_guidance = (
+                "resolve_question 只接受当前 working context 的 active question entry_id。"
+            )
+            if (
+                isinstance(operation, dict)
+                and operation.get("op") == "resolve_question"
+                and target_id in state.loaded_memory_ids
+            ):
+                code = "id_scope_mismatch"
+                message = (
+                    f"{target_id} 是 patient memory_id，不是 working context question_id；"
+                    "请在 final.memory_updates 中用 related_memory_id 关联它。"
+                )
+                scope_guidance = (
+                    "Patient Memory 只能通过 final.memory_updates.related_memory_id "
+                    "写入 resolved/superseded transition。"
+                )
+            raise ToolError(
+                code,
+                message,
+                details={
+                    **exc.details,
+                    "operation_index": index,
+                    "target_id": target_id,
+                    "valid_question_ids": valid_question_ids,
+                    "applied": False,
+                    "validated_prior_operation_count": len(applied),
+                    "scope_guidance": scope_guidance,
+                },
+            ) from exc
+
+    if len(context.known_facts) > 20:
+        raise ToolError("context_limit", "known_facts 最多允许 20 项")
+    if len(context.question_states) > 20:
+        raise ToolError("context_limit", "question_states 最多允许 20 项")
+    context.unresolved_questions = [
+        str(item["text"])
+        for item in context.question_states
+        if item.get("status") == "active"
+    ]
+    refs: list[str] = []
+    for fact in context.known_facts:
+        refs.extend(fact.get("evidence_refs", []))
+    for conflict in context.conflicts:
+        refs.extend(conflict.get("evidence_refs", []))
+    for question in context.question_states:
+        refs.extend(question.get("evidence_refs", []))
+        refs.extend(question.get("resolution_evidence_refs", []))
+    context.relevant_record_refs = list(dict.fromkeys(refs))
+    if len(context.relevant_record_refs) > 30:
+        raise ToolError("context_limit", "relevant_record_refs 最多允许 30 项")
+    return context, applied
 
 
 class ToolRegistry:
@@ -338,7 +649,15 @@ class ToolRegistry:
             return {"ok": True, "found": patient is not None, "patient": patient}
 
         if name == "search_records":
-            for field in ("record_type", "keyword", "from_time", "to_time", "cursor"):
+            for field in (
+                "record_type",
+                "keyword",
+                "exam_type",
+                "workflow_id",
+                "from_time",
+                "to_time",
+                "cursor",
+            ):
                 if field in arguments and not isinstance(arguments[field], str):
                     raise ToolError("invalid_arguments", f"{field} 必须是字符串")
             if "from_time" in arguments:
@@ -355,6 +674,8 @@ class ToolRegistry:
                 state.patient_id,
                 record_type=arguments.get("record_type"),
                 keyword=arguments.get("keyword"),
+                exam_type=arguments.get("exam_type"),
+                workflow_id=arguments.get("workflow_id"),
                 from_time=arguments.get("from_time"),
                 to_time=arguments.get("to_time"),
                 limit=limit,
@@ -370,8 +691,33 @@ class ToolRegistry:
             return {"ok": True, "found": record is not None, "record": record}
 
         if name == "update_working_context":
+            if "operations" in arguments:
+                context, applied = _validate_incremental_context(arguments, state)
+                return {
+                    "ok": True,
+                    "update_mode": "incremental",
+                    "applied_operations": applied,
+                    "patient_context": context.to_dict(),
+                }
+            legacy_required = {
+                "known_facts",
+                "unresolved_questions",
+                "conflicts",
+                "relevant_record_refs",
+            }
+            missing = sorted(legacy_required - arguments.keys())
+            if missing:
+                raise ToolError(
+                    "invalid_arguments",
+                    f"缺少 operations，且 legacy snapshot 缺少字段：{', '.join(missing)}",
+                )
             context = _validate_context(arguments, state)
-            return {"ok": True, "patient_context": context.to_dict()}
+            return {
+                "ok": True,
+                "update_mode": "legacy_snapshot",
+                "applied_operations": [],
+                "patient_context": context.to_dict(),
+            }
 
         if name == "create_order":
             for field in ("order_type", "reason"):
@@ -401,4 +747,3 @@ class ToolRegistry:
             raise ToolError("invalid_arguments", "order_id 必须是非空字符串")
         order = self.database.get_order(state.patient_id, order_id)
         return {"ok": True, "found": order is not None, "order": order}
-

@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "highlights": [
+    {
+      "id": "gi002-success-path",
+      "patient_id": "GI-DEMO-002",
+      "title": "GI-DEMO-002：完整成功路径",
+      "summary": "沿三个 Encounter 查看症状与检查检索、病理证据、治疗计划、随访结果，以及真实的跨 Encounter Memory 更新。此病例没有调用 Working Context。",
+      "accent": "teal",
+      "targets": [
+        {"label": "E01 初始检查", "run_id": "p1-run-93f2eae300e0", "step": 2},
+        {"label": "E02 病理与治疗", "run_id": "p1-run-1a9e50725be7", "step": 2},
+        {"label": "E03 随访与 Memory transition", "run_id": "p1-run-c7aa68fb719b", "step": 5}
+      ]
+    },
+    {
+      "id": "gi005-workflow-state",
+      "patient_id": "GI-DEMO-005",
+      "title": "GI-DEMO-005：工作流与状态管理",
+      "summary": "对照检查/治疗计划、住院状态变化、手术完成；观察 E02 的 Working Context 写入，以及 E03 Final 证据拒绝后重新读取并修正。",
+      "accent": "amber",
+      "targets": [
+        {"label": "E02 写入 Working Context", "run_id": "p1-run-52ed1bacf63f", "step": 4},
+        {"label": "E03 证据引用被拒", "run_id": "p1-run-d451c2d3278c", "step": 2},
+        {"label": "E03 补读与修正", "run_id": "p1-run-d451c2d3278c", "step": 3}
+      ]
+    },
+    {
+      "id": "gi004-information-loss",
+      "patient_id": "GI-DEMO-004",
+      "title": "GI-DEMO-004 E03：已读信息丢失",
+      "summary": "rec-018 在 step 3 已返回粪钙卫蛋白 48 µg/g；随后正文退出 Prompt，且没有 Working Context 保存，Final 却把具体结果称为未知。",
+      "accent": "red",
+      "targets": [
+        {"label": "读取 rec-018", "run_id": "p1-run-c64101d39b1f", "step": 3, "record_id": "gi-demo-004-rec-018"},
+        {"label": "正文退出 Prompt", "run_id": "p1-run-c64101d39b1f", "step": 5, "record_id": "gi-demo-004-rec-018"},
+        {"label": "查看原始 Final", "run_id": "p1-run-c64101d39b1f", "step": 5, "tab": "final"}
+      ]
+    }
+  ],
+  "annotations": [
+    {
+      "id": "gi002-e01-initial-records",
+      "run_id": "p1-run-93f2eae300e0",
+      "step": 2,
+      "title": "读取初始检查全文",
+      "text": "本批读取初始阶段的检查与就诊记录；可展开核对每个 get_record 的原始参数和返回值。"
+    },
+    {
+      "id": "gi002-e02-pathology",
+      "run_id": "p1-run-1a9e50725be7",
+      "step": 2,
+      "call_id": "call_02_n6xKvTGecX8ZIDxuiTEo5245",
+      "record_id": "gi-demo-002-rec-011",
+      "title": "读取病理全文",
+      "text": "病理记录在本批被全文读取。右侧可同时核对工具返回和该记录在下一轮 Prompt 中的可见性。"
+    },
+    {
+      "id": "gi002-e03-memory-transition",
+      "run_id": "p1-run-c7aa68fb719b",
+      "step": 5,
+      "title": "Memory 状态更新",
+      "text": "Final 写入了跨 Encounter Memory，并通过 related_memory_id 形成真实 transition；这与 Working Context 无关。"
+    },
+    {
+      "id": "gi005-e02-working-context",
+      "run_id": "p1-run-52ed1bacf63f",
+      "step": 4,
+      "call_id": "call_01_2LE0R4CmE83srUH0uB2P1837",
+      "title": "Working Context 写入成功",
+      "text": "本轮 update_working_context 成功保存五条 findings。这里展示真实 operations、Controller 返回和随后状态变化。"
+    },
+    {
+      "id": "gi005-e03-final-rejected",
+      "run_id": "p1-run-d451c2d3278c",
+      "step": 2,
+      "title": "证据引用被 Controller 拒绝",
+      "text": "模型首次尝试 Final 时引用了本轮尚未全文读取的 rec-015 至 rec-018。Controller 记录 invalid_final_evidence，未接受该 Final。"
+    },
+    {
+      "id": "gi005-e03-reread",
+      "run_id": "p1-run-d451c2d3278c",
+      "step": 3,
+      "title": "补读证据并继续",
+      "text": "拒绝后模型读取 rec-015 至 rec-018。后续仍发生重复读取；Viewer 保留这些真实动作，不把修正过程简化为一次成功。"
+    },
+    {
+      "id": "gi004-e03-rec018-read",
+      "run_id": "p1-run-c64101d39b1f",
+      "step": 3,
+      "call_id": "call_00_Cx8O41E9ehdVImVnGcvN5878",
+      "record_id": "gi-demo-004-rec-018",
+      "title": "rec-018 正文已返回",
+      "text": "工具返回中明确包含粪钙卫蛋白 48 µg/g（参考 <50）。此时它是本轮已全文读取且当前可见的记录。"
+    },
+    {
+      "id": "gi004-e03-rec018-evicted",
+      "run_id": "p1-run-c64101d39b1f",
+      "step": 5,
+      "record_id": "gi-demo-004-rec-018",
+      "title": "已读正文退出当前 Prompt",
+      "text": "step 4 重读 rec-014 至 rec-017 后，rec-018 仍标记 inspected，但 full_content_currently_visible=false；本 run 没有调用 Working Context 保存其数值。"
+    },
+    {
+      "id": "gi004-e03-final-omission",
+      "run_id": "p1-run-c64101d39b1f",
+      "step": 5,
+      "title": "Final 将已知指标误称为未知",
+      "text": "原始 Final 没有引用 rec-018，并声称具体数值不可用。Viewer 只呈现该差异，不自动修正答案。"
+    }
+  ],
+  "known_limitations": [
+    "Viewer 展示的是保存的 artifacts 与确定性派生状态，不推测模型隐藏思维。",
+    "合法的结构化 evidence_refs 只能证明引用通过协议校验，不能保证 Final 中每句话都已完成医学或语义验证。",
+    "Patient Memory 是历史 Agent 工作结果，不等于数据库原始医疗事实。",
+    "完整临床全文在 Viewer 中可供人工审查，并不表示它在所选步骤对 Agent 可见。",
+    "历史 run 的 Memory 仅显示其自身 artifacts 中保存的快照；不同实验 checkpoint 不会被合并。"
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "experiment_id": "gi-demo-001-e03-context-retry-v1",
+  "git_commit": "5491c687075301bf936f7c8628a572a4c49bbd38",
+  "runtime_version": "phase1-v4.3-context-retry",
+  "requested_model": "deepseek-chat",
+  "provider_response_model": "deepseek-flash",
+  "checkpoint": {
+    "instance_id": "gi-demo-001-e03-context-retry-v1",
+    "source_runs": [
+      "p1-run-2ed3c307f21d",
+      "p1-run-7b4ee7428483"
+    ],
+    "initial_memory_rows": 8,
+    "excluded_prior_e03_rows": true
+  },
+  "limits": {
+    "max_steps": 10,
+    "max_tool_calls": 12,
+    "max_prompt_bytes": 32000,
+    "max_working_context_revisions": 2,
+    "working_context_retry_ttl_steps": 2
+  },
+  "tests_before_handoff": {
+    "tests": 16,
+    "tests_phase1": 53,
+    "total": 69,
+    "result": "passed"
+  },
+  "run": {
+    "encounter_id": "GI-DEMO-001-E03",
+    "run_id": "p1-run-8fb63b04aeaf",
+    "status": "complete",
+    "stop_reason": "final_response",
+    "model_calls": 3,
+    "executed_tool_calls": 6,
+    "record_reads": [
+      "gi-demo-001-rec-017",
+      "gi-demo-001-rec-018",
+      "gi-demo-001-rec-014",
+      "gi-demo-001-rec-015"
+    ],
+    "duplicate_record_reads": 0,
+    "working_context_calls": 0,
+    "working_context_findings_saved": 0,
+    "memory_updates_written": 3,
+    "prompt_bytes_by_step": [19721, 31706, 31936],
+    "max_prompt_bytes_observed": 31936,
+    "final_evidence_refs": [
+      "gi-demo-001-rec-017",
+      "gi-demo-001-rec-018",
+      "gi-demo-001-rec-014",
+      "gi-demo-001-rec-015"
+    ]
+  },
+  "source_and_test_sha256": {
+    "src/clinical_agent_explorer_phase1/models.py": "155F3DB2E92A0A802C5AE489FFFD7B2297894CC4777A43C34FAF3632F726918A",
+    "src/clinical_agent_explorer_phase1/runtime.py": "44CC63E1026AFDB23E6CE5070E14BFAD56080C64737D207A8FD2DC6F4EBB6C28",
+    "src/clinical_agent_explorer_phase1/tools.py": "C5145CC0EEC1E67941984F5C7004FEBEBC141D2734A373D06693A2D8B0726805",
+    "tests_phase1/test_encounter_protocol.py": "15B87DA88D12D6ADFCDA94E3FA257D3FDBEEBD5DDE5A940EAD6A5F2DE139419D",
+    "tests_phase1/test_stopping_contract.py": "689F067DA49F3A490BD0D30FCCB7F20517AEDB4C7720B698400D200B5FC726FA",
+    "scripts/prepare_e03_context_retry_instance.py": "BB2EB9F2BF7AAB1111288B0A47790BF98AFA034547174D217B4ADEA1FCE0427D"
+  },
+  "case_sha256": {
+    "cases/gastro_demo/gi_demo_001/clinical_records.jsonl": "91871FC27A0D3725D3C020D66A7FB5BE9AC01D0BB20D550F3122FCA417D7B887",
+    "cases/gastro_demo/gi_demo_001/record_metadata.json": "A2ACFC3C14BEC0AFFEDE720A1BA5551E47E54359C07B864A717209DAFF31C81F",
+    "cases/gastro_demo/gi_demo_001/encounters.json": "A4AF02F9D2DF4AA7CE914259DD7567C77543829B44D1A375480DE1D7467DBA94"
+  },
+  "preservation_note": "E03 was executed exactly once from a fresh post-E02 memory checkpoint. No post-result rerun or model-specific prompt tuning was performed."
+}

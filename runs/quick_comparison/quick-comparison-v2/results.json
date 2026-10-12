@@ -1,0 +1,357 @@
+[
+  {
+    "artifact_dir": "runs\\quick_comparison\\quick-comparison-v2\\full_context\\cough_stopping_001",
+    "case_id": "cough_stopping_001",
+    "method": "full_context",
+    "model": "deepseek-flash",
+    "model_calls": 1,
+    "record_ids_exposed": [
+      "cs-rec-001",
+      "cs-rec-002",
+      "cs-rec-003",
+      "cs-rec-004",
+      "cs-rec-005",
+      "cs-rec-006",
+      "cs-rec-007",
+      "cs-rec-008",
+      "cs-rec-009",
+      "cs-rec-010",
+      "cs-rec-011",
+      "cs-rec-012",
+      "cs-rec-013",
+      "cs-rec-014",
+      "cs-rec-015",
+      "cs-rec-016",
+      "cs-rec-017",
+      "cs-rec-018",
+      "cs-rec-019",
+      "cs-rec-020",
+      "cs-rec-021",
+      "cs-rec-022",
+      "cs-rec-023",
+      "cs-rec-024",
+      "cs-rec-025",
+      "cs-rec-026",
+      "cs-rec-027",
+      "cs-rec-028",
+      "cs-rec-029",
+      "cs-rec-030",
+      "cs-rec-031",
+      "cs-rec-032",
+      "cs-rec-033",
+      "cs-rec-034",
+      "cs-rec-035"
+    ],
+    "records_exposed": 35,
+    "records_total": 35,
+    "status": "complete",
+    "tool_calls": 0,
+    "usage": {
+      "completion_tokens": 591,
+      "prompt_cache_hit_tokens": 4736,
+      "prompt_cache_miss_tokens": 211,
+      "prompt_tokens": 4947,
+      "prompt_tokens_details": {
+        "cached_tokens": 4736
+      },
+      "total_tokens": 5538
+    }
+  },
+  {
+    "artifact_dir": "runs\\quick_comparison\\quick-comparison-v2\\rag_bm25\\cough_stopping_001",
+    "case_id": "cough_stopping_001",
+    "method": "rag_bm25",
+    "model": "deepseek-flash",
+    "model_calls": 1,
+    "record_ids_exposed": [
+      "cs-rec-029",
+      "cs-rec-025",
+      "cs-rec-028",
+      "cs-rec-027",
+      "cs-rec-001",
+      "cs-rec-009",
+      "cs-rec-026",
+      "cs-rec-031"
+    ],
+    "records_exposed": 8,
+    "records_total": 35,
+    "status": "complete",
+    "tool_calls": 0,
+    "usage": {
+      "completion_tokens": 519,
+      "prompt_cache_hit_tokens": 1280,
+      "prompt_cache_miss_tokens": 179,
+      "prompt_tokens": 1459,
+      "prompt_tokens_details": {
+        "cached_tokens": 1280
+      },
+      "total_tokens": 1978
+    }
+  },
+  {
+    "artifact_dir": "runs\\quick_comparison\\quick-comparison-v2\\v4\\cough_stopping_001",
+    "case_id": "cough_stopping_001",
+    "method": "v4",
+    "model": [
+      "deepseek-flash"
+    ],
+    "model_calls": 3,
+    "record_ids_exposed": [
+      "cs-rec-025",
+      "cs-rec-024",
+      "cs-rec-029",
+      "cs-rec-031"
+    ],
+    "records_discovered": 21,
+    "records_exposed": 4,
+    "records_total": 35,
+    "status": "complete",
+    "stop_reason": "final_response",
+    "tool_calls": 7,
+    "tool_calls_by_name": {
+      "get_patient": 1,
+      "get_record": 4,
+      "search_records": 2
+    },
+    "usage": {
+      "completion_tokens": 1994,
+      "prompt_cache_hit_tokens": 3712,
+      "prompt_cache_miss_tokens": 12281,
+      "prompt_tokens": 15993,
+      "total_tokens": 17987
+    }
+  },
+  {
+    "artifact_dir": "runs\\quick_comparison\\quick-comparison-v2\\full_context\\dizziness_longitudinal_001",
+    "case_id": "dizziness_longitudinal_001",
+    "method": "full_context",
+    "model": "deepseek-flash",
+    "model_calls": 1,
+    "record_ids_exposed": [
+      "dz-rec-001",
+      "dz-rec-002",
+      "dz-rec-003",
+      "dz-rec-004",
+      "dz-rec-005",
+      "dz-rec-006",
+      "dz-rec-007",
+      "dz-rec-008",
+      "dz-rec-009",
+      "dz-rec-010",
+      "dz-rec-011",
+      "dz-rec-012",
+      "dz-rec-013",
+      "dz-rec-014",
+      "dz-rec-015",
+      "dz-rec-016",
+      "dz-rec-017",
+      "dz-rec-018",
+      "dz-rec-019",
+      "dz-rec-020",
+      "dz-rec-021",
+      "dz-rec-022",
+      "dz-rec-023",
+      "dz-rec-024",
+      "dz-rec-025",
+      "dz-rec-026",
+      "dz-rec-027",
+      "dz-rec-028",
+      "dz-rec-029",
+      "dz-rec-030",
+      "dz-rec-031",
+      "dz-rec-032",
+      "dz-rec-033",
+      "dz-rec-034",
+      "dz-rec-035",
+      "dz-rec-036",
+      "dz-rec-037",
+      "dz-rec-038",
+      "dz-rec-039",
+      "dz-rec-040"
+    ],
+    "records_exposed": 40,
+    "records_total": 40,
+    "status": "complete",
+    "tool_calls": 0,
+    "usage": {
+      "completion_tokens": 1788,
+      "prompt_cache_hit_tokens": 6267,
+      "prompt_cache_miss_tokens": 134,
+      "prompt_tokens": 6401,
+      "prompt_tokens_details": {
+        "cached_tokens": 6267
+      },
+      "total_tokens": 8189
+    }
+  },
+  {
+    "artifact_dir": "runs\\quick_comparison\\quick-comparison-v2\\rag_bm25\\dizziness_longitudinal_001",
+    "case_id": "dizziness_longitudinal_001",
+    "method": "rag_bm25",
+    "model": "deepseek-flash",
+    "model_calls": 1,
+    "record_ids_exposed": [
+      "dz-rec-014",
+      "dz-rec-020",
+      "dz-rec-038",
+      "dz-rec-024",
+      "dz-rec-001",
+      "dz-rec-039",
+      "dz-rec-027",
+      "dz-rec-023"
+    ],
+    "records_exposed": 8,
+    "records_total": 40,
+    "status": "complete",
+    "tool_calls": 0,
+    "usage": {
+      "completion_tokens": 663,
+      "prompt_cache_hit_tokens": 1408,
+      "prompt_cache_miss_tokens": 159,
+      "prompt_tokens": 1567,
+      "prompt_tokens_details": {
+        "cached_tokens": 1408
+      },
+      "total_tokens": 2230
+    }
+  },
+  {
+    "artifact_dir": "runs\\quick_comparison\\quick-comparison-v2\\v4\\dizziness_longitudinal_001",
+    "case_id": "dizziness_longitudinal_001",
+    "method": "v4",
+    "model": [
+      "deepseek-flash"
+    ],
+    "model_calls": 6,
+    "record_ids_exposed": [
+      "dz-rec-014",
+      "dz-rec-015",
+      "dz-rec-017",
+      "dz-rec-016",
+      "dz-rec-039",
+      "dz-rec-026",
+      "dz-rec-024",
+      "dz-rec-025"
+    ],
+    "records_discovered": 18,
+    "records_exposed": 8,
+    "records_total": 40,
+    "status": "complete",
+    "stop_reason": "final_response",
+    "tool_calls": 12,
+    "tool_calls_by_name": {
+      "get_patient": 1,
+      "get_record": 8,
+      "search_records": 2,
+      "update_working_context": 1
+    },
+    "usage": {
+      "completion_tokens": 5121,
+      "prompt_cache_hit_tokens": 11392,
+      "prompt_cache_miss_tokens": 24175,
+      "prompt_tokens": 35567,
+      "total_tokens": 40688
+    }
+  },
+  {
+    "artifact_dir": "runs\\quick_comparison\\quick-comparison-v2\\full_context\\workflow_status_001",
+    "case_id": "workflow_status_001",
+    "method": "full_context",
+    "model": "deepseek-flash",
+    "model_calls": 1,
+    "record_ids_exposed": [
+      "wf-rec-001",
+      "wf-rec-002",
+      "wf-rec-003",
+      "wf-rec-004",
+      "wf-rec-005",
+      "wf-rec-006",
+      "wf-rec-007",
+      "wf-rec-008",
+      "wf-rec-009"
+    ],
+    "records_exposed": 9,
+    "records_total": 9,
+    "status": "complete",
+    "tool_calls": 0,
+    "usage": {
+      "completion_tokens": 407,
+      "prompt_cache_hit_tokens": 1408,
+      "prompt_cache_miss_tokens": 205,
+      "prompt_tokens": 1613,
+      "prompt_tokens_details": {
+        "cached_tokens": 1408
+      },
+      "total_tokens": 2020
+    }
+  },
+  {
+    "artifact_dir": "runs\\quick_comparison\\quick-comparison-v2\\rag_bm25\\workflow_status_001",
+    "case_id": "workflow_status_001",
+    "method": "rag_bm25",
+    "model": "deepseek-flash",
+    "model_calls": 1,
+    "record_ids_exposed": [
+      "wf-rec-002",
+      "wf-rec-007",
+      "wf-rec-008",
+      "wf-rec-006",
+      "wf-rec-004",
+      "wf-rec-001",
+      "wf-rec-005",
+      "wf-rec-003"
+    ],
+    "records_exposed": 8,
+    "records_total": 9,
+    "status": "complete",
+    "tool_calls": 0,
+    "usage": {
+      "completion_tokens": 475,
+      "prompt_cache_hit_tokens": 1280,
+      "prompt_cache_miss_tokens": 191,
+      "prompt_tokens": 1471,
+      "prompt_tokens_details": {
+        "cached_tokens": 1280
+      },
+      "total_tokens": 1946
+    }
+  },
+  {
+    "artifact_dir": "runs\\quick_comparison\\quick-comparison-v2\\v4\\workflow_status_001",
+    "case_id": "workflow_status_001",
+    "method": "v4",
+    "model": [
+      "deepseek-flash"
+    ],
+    "model_calls": 6,
+    "record_ids_exposed": [
+      "wf-rec-001",
+      "wf-rec-002",
+      "wf-rec-003",
+      "wf-rec-004",
+      "wf-rec-005",
+      "wf-rec-006",
+      "wf-rec-007",
+      "wf-rec-008",
+      "wf-rec-009"
+    ],
+    "records_discovered": 9,
+    "records_exposed": 9,
+    "records_total": 9,
+    "status": "complete",
+    "stop_reason": "final_response",
+    "tool_calls": 15,
+    "tool_calls_by_name": {
+      "get_record": 13,
+      "search_records": 1,
+      "update_working_context": 1
+    },
+    "usage": {
+      "completion_tokens": 2983,
+      "prompt_cache_hit_tokens": 11392,
+      "prompt_cache_miss_tokens": 17790,
+      "prompt_tokens": 29182,
+      "total_tokens": 32165
+    }
+  }
+]

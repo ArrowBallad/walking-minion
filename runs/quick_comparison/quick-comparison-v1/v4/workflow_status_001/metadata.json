@@ -1,0 +1,23 @@
+{
+  "case_id": "workflow_status_001_exploratory_quick_comparison",
+  "created_at": "2026-10-10T02:13:37.734823Z",
+  "max_consecutive_recoverable_errors": 2,
+  "max_final_revisions": 2,
+  "max_prompt_bytes": 32000,
+  "max_steps": 25,
+  "max_tool_calls": 40,
+  "model": {
+    "adapter": "deepseek-chat-completions",
+    "base_url": "https://api.deepseek.com",
+    "model": "deepseek-chat",
+    "parallel_tool_calls": false,
+    "thinking": "disabled"
+  },
+  "patient_id": "WF-SHORT-001",
+  "phase": "phase1",
+  "recent_result_limit": 2,
+  "retrieval_catalog_limit": 24,
+  "retrieval_preview_chars": 160,
+  "run_id": "workflow_status_001",
+  "runtime_version": "phase1-v4-retrieval-awareness"
+}

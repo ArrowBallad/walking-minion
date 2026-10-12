@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\n  \"final_text\": \"针对 WF-SHORT-001 的三项检查工作流状态如下：\\n\\n1. 胸部 X 线：已申请（wf-rec-002，正侧位胸片，用于评估发热和咳嗽）；实际执行/完成记录见于 wf-rec-003（2026-03-02 08:30 完成，图像提交放射科阅片）；并已产生最终报告（wf-rec-004）。报告结果概括：心影大小正常，双肺未见局灶性实变或胸腔积液，结论为未见急性心肺异常。\\n\\n2. 尿培养：仅停留在申请（wf-rec-005）和标本采集/送检（wf-rec-006）阶段；随后因标本容器标签与申请信息不一致被实验室拒收，检验已取消（wf-rec-007）。本次尿培养未进行培养，未产生可解释的微生物学结果，如仍有需要须重新采集。因此不能将申请或采集视为最终结果。\\n\\n3. 超声心动图：截至最后一条记录（wf-rec-008，2026-03-03 09:00）仅为已申请且待排期；没有操作完成记录，也没有超声心动图报告。即属于 ordered/pending，既未 performed，也未 resulted。\\n\\n另注：wf-rec-009 的全血细胞计数为同期独立的最终实验室结果，与上述三项检查的工作流状态无关。\\n\\n本回答仅为记录综述，未创建任何订单或写入动作。（合成数据实验，非真实临床诊疗。）\",\n  \"evidence_refs\": [\n    \"wf-rec-001\",\n    \"wf-rec-002\",\n    \"wf-rec-003\",\n    \"wf-rec-004\",\n    \"wf-rec-005\",\n    \"wf-rec-006\",\n    \"wf-rec-007\",\n    \"wf-rec-008\",\n    \"wf-rec-009\"\n  ]\n}",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1791600368,
+  "id": "4c6b064e-5fae-4bd6-929e-8523828af81b",
+  "model": "deepseek-flash",
+  "object": "chat.completion",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "usage": {
+    "completion_tokens": 407,
+    "prompt_cache_hit_tokens": 1408,
+    "prompt_cache_miss_tokens": 205,
+    "prompt_tokens": 1613,
+    "prompt_tokens_details": {
+      "cached_tokens": 1408
+    },
+    "total_tokens": 2020
+  }
+}

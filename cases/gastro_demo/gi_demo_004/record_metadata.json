@@ -1,0 +1,20 @@
+{
+  "gi-demo-004-rec-001": {"available_at": "2025-03-03T09:10:00Z"},
+  "gi-demo-004-rec-002": {"available_at": "2025-03-03T10:20:00Z", "exam_type": "initial_blood_panel"},
+  "gi-demo-004-rec-003": {"available_at": "2025-03-04T14:00:00Z", "exam_type": "stool_infection_and_inflammation_screen"},
+  "gi-demo-004-rec-004": {"available_at": "2025-03-05T08:45:00Z", "workflow_id": "gi-referral-004", "workflow_stage": "referral_requested"},
+  "gi-demo-004-rec-005": {"available_at": "2025-03-12T10:00:00Z", "workflow_id": "gi-referral-004", "workflow_stage": "specialist_visit"},
+  "gi-demo-004-rec-006": {"available_at": "2025-03-12T10:20:00Z", "exam_type": "colonoscopy", "workflow_id": "proctitis-diagnostic-colonoscopy-004", "workflow_stage": "requested_and_scheduled"},
+  "gi-demo-004-rec-007": {"available_at": "2025-03-20T08:00:00Z", "exam_type": "colonoscopy", "workflow_id": "proctitis-diagnostic-colonoscopy-004", "workflow_stage": "procedure_completed"},
+  "gi-demo-004-rec-008": {"available_at": "2025-03-20T08:45:00Z", "exam_type": "colonoscopy", "workflow_id": "proctitis-diagnostic-colonoscopy-004", "workflow_stage": "endoscopy_report_final", "keywords": ["结肠镜", "直肠", "最终报告"]},
+  "gi-demo-004-rec-009": {"available_at": "2025-03-25T14:30:00Z", "exam_type": "colorectal_histopathology", "workflow_id": "proctitis-diagnostic-colonoscopy-004", "workflow_stage": "pathology_final", "keywords": ["结肠活检", "直肠", "病理", "最终结果"]},
+  "gi-demo-004-rec-010": {"available_at": "2025-03-28T09:40:00Z", "workflow_id": "proctitis-treatment-004", "workflow_stage": "results_review_and_plan"},
+  "gi-demo-004-rec-011": {"available_at": "2025-03-28T09:50:00Z", "workflow_id": "proctitis-treatment-004", "workflow_stage": "treatment_started"},
+  "gi-demo-004-rec-012": {"available_at": "2025-05-09T09:20:00Z", "workflow_id": "proctitis-treatment-004", "workflow_stage": "clinical_followup"},
+  "gi-demo-004-rec-013": {"available_at": "2025-05-10T08:00:00Z", "exam_type": "treatment_response_panel", "workflow_id": "proctitis-treatment-004", "workflow_stage": "response_labs_final"},
+  "gi-demo-004-rec-014": {"available_at": "2025-11-03T10:30:00Z", "workflow_id": "proctitis-relapse-004", "workflow_stage": "relapse_assessment"},
+  "gi-demo-004-rec-015": {"available_at": "2025-11-04T15:00:00Z", "exam_type": "stool_infection_and_inflammation_screen", "workflow_id": "proctitis-relapse-004", "workflow_stage": "relapse_tests_final"},
+  "gi-demo-004-rec-016": {"available_at": "2025-11-05T09:00:00Z", "workflow_id": "proctitis-relapse-004", "workflow_stage": "treatment_restarted"},
+  "gi-demo-004-rec-017": {"available_at": "2025-12-18T09:10:00Z", "workflow_id": "proctitis-relapse-004", "workflow_stage": "clinical_response"},
+  "gi-demo-004-rec-018": {"available_at": "2025-12-19T08:10:00Z", "exam_type": "fecal_calprotectin", "workflow_id": "proctitis-relapse-004", "workflow_stage": "response_test_final"}
+}

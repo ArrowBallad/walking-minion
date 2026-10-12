@@ -1,0 +1,18 @@
+{
+  "git_commit": "5491c687075301bf936f7c8628a572a4c49bbd38",
+  "runtime_version": "phase1-v4-execution-protocol-patch",
+  "requested_model": "deepseek-chat",
+  "provider_response_model": "deepseek-flash",
+  "source_and_case_sha256": {
+    "src/clinical_agent_explorer_phase1/storage.py": "CC8FFD0073DAEBCD3B5FAA8E544C96DC639326346B98BE1BEACAFC529D8CCA37",
+    "src/clinical_agent_explorer_phase1/tools.py": "A12E7F18858F068943BDFA166BABEFFCCEBD4D49C084CDE08F4A2DC6D427155E",
+    "src/clinical_agent_explorer_phase1/runtime.py": "7C3DFD2A4F40C68D55EC3A8C37B16F778F80CFBA19D8CBF2738BCF10877DA6DE",
+    "src/clinical_agent_explorer_phase1/cli.py": "90D38121B86DF6BB6D48D9CF1788EC2ABB8D792F21AC5D98080D27BEB1FE1061",
+    "src/clinical_agent_explorer_phase1/model_client.py": "B50361D6C9D2E1D68984FD5AB17F1F2252C13E927591749A313674B4CB49F506",
+    "cases/gastro_demo/gi_demo_001/patients.jsonl": "EC1DA350F399F47EC95ADD81A74EB4D251F911ED16BF986571DE544E238E827C",
+    "cases/gastro_demo/gi_demo_001/clinical_records.jsonl": "91871FC27A0D3725D3C020D66A7FB5BE9AC01D0BB20D550F3122FCA417D7B887",
+    "cases/gastro_demo/gi_demo_001/orders.jsonl": "01BA4719C80B6FE911B091A7C05124B64EEECE964E09C058EF8F9805DACA546B",
+    "cases/gastro_demo/gi_demo_001/task.md": "A0497A14C1F15C97EFA72E9B99CDA679BAEED76534E5FB5F107344811574DCE0"
+  },
+  "note": "The repository already contained uncommitted V4.1 patch and case changes. They were preserved. The original runtime artifacts were not edited; this supplemental freeze file was added after the first run."
+}

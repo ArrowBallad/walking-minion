@@ -1,0 +1,31 @@
+{
+  "as_of": "2025-09-20T23:59:59Z",
+  "case_id": "gi_demo_001_multi_v1",
+  "created_at": "2026-10-10T09:40:00.543506Z",
+  "encounter_id": "GI-DEMO-001-E03",
+  "max_consecutive_recoverable_errors": 2,
+  "max_final_revisions": 2,
+  "max_prompt_bytes": 32000,
+  "max_steps": 10,
+  "max_tool_calls": 12,
+  "max_tool_calls_per_batch": 4,
+  "max_working_context_revisions": 2,
+  "memory_limit": 12,
+  "model": {
+    "adapter": "deepseek-chat-completions",
+    "as_of": "2025-09-20T23:59:59Z",
+    "base_url": "https://api.deepseek.com",
+    "encounter_id": "GI-DEMO-001-E03",
+    "model": "deepseek-chat",
+    "parallel_tool_calls": true,
+    "thinking": "disabled"
+  },
+  "patient_id": "GI-DEMO-001",
+  "phase": "phase1",
+  "recent_result_limit": 2,
+  "retrieval_catalog_limit": 24,
+  "retrieval_preview_chars": 160,
+  "run_id": "p1-run-1c58377f6412",
+  "runtime_version": "phase1-v4.3-context-retry",
+  "working_context_retry_ttl_steps": 2
+}

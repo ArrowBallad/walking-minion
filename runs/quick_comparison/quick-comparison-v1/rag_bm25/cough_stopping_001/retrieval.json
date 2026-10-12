@@ -1,0 +1,39 @@
+{
+  "method": "BM25",
+  "records": [
+    {
+      "record_id": "cs-rec-029",
+      "score": 52.730536226039995
+    },
+    {
+      "record_id": "cs-rec-025",
+      "score": 51.90567789701678
+    },
+    {
+      "record_id": "cs-rec-028",
+      "score": 44.62084622818171
+    },
+    {
+      "record_id": "cs-rec-027",
+      "score": 44.187900920083955
+    },
+    {
+      "record_id": "cs-rec-001",
+      "score": 36.538720489648455
+    },
+    {
+      "record_id": "cs-rec-009",
+      "score": 32.858545818857
+    },
+    {
+      "record_id": "cs-rec-026",
+      "score": 31.57404615037056
+    },
+    {
+      "record_id": "cs-rec-031",
+      "score": 30.19566291090365
+    }
+  ],
+  "tokenizer": "lowercase alphanumeric words plus CJK unigrams and bigrams",
+  "top_k": 8
+}

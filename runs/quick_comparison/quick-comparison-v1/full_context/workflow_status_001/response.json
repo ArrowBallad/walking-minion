@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\n  \"final_text\": \"针对患者 WF-SHORT-001 的三项检查工作流状态如下：\\n\\n1. 胸部 X 线：已申请（wf-rec-002，正侧位胸部 X 线，状态“已申请”）；已实际执行（wf-rec-003，2026-03-02 08:30 完成，状态“已完成”）；已产生最终报告（wf-rec-004，状态“最终报告”）。报告结果概括为：心影大小正常，双肺未见局灶性实变或胸腔积液，结论为未见急性心肺异常。（注：wf-rec-001 仅记录计划，不含结果。）\\n\\n2. 尿培养：仅停留在申请（wf-rec-005，“已申请”）和标本采集（wf-rec-006，“已采集”）阶段，未产生可解释的检验结果。标本被实验室因容器标签与申请信息不一致而拒收，检验已取消（wf-rec-007，状态“已取消”），本次未进行培养，未产生可解释的微生物学结果；如仍有需要须重新采集。\\n\\n3. 超声心动图：截至最后一条记录（wf-rec-008，2026-03-03），仅处于已申请且待排期状态（状态“待排期”），没有操作完成记录，也没有超声心动图报告，即尚未执行、尚未出结果。\\n\\n三项检查均不应将申请、预约或标本采集视为最终结果；其中胸部 X 线为 ordered→performed→resulted 完整闭环，尿培养为 ordered→performed（采集）后被取消并拒收，超声心动图为 ordered 后待排期。本回答仅为记录综述，不创建订单或任何写入动作。\",\n  \"evidence_refs\": [\n    \"wf-rec-001\",\n    \"wf-rec-002\",\n    \"wf-rec-003\",\n    \"wf-rec-004\",\n    \"wf-rec-005\",\n    \"wf-rec-006\",\n    \"wf-rec-007\",\n    \"wf-rec-008\",\n    \"wf-rec-009\"\n  ]\n}",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1791598369,
+  "id": "d63bb171-97b4-4bca-9a31-ce10ee87548a",
+  "model": "deepseek-flash",
+  "object": "chat.completion",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "usage": {
+    "completion_tokens": 448,
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1613,
+    "prompt_tokens": 1613,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 2061
+  }
+}

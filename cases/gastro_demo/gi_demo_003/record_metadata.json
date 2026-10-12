@@ -1,0 +1,17 @@
+{
+  "gi-demo-003-rec-001": {"available_at": "2024-02-16T11:00:00Z", "exam_type": "fecal_immunochemical_test"},
+  "gi-demo-003-rec-002": {"available_at": "2025-04-08T08:40:00Z"},
+  "gi-demo-003-rec-003": {"available_at": "2025-04-08T09:05:00Z", "exam_type": "acute_abdominal_pain_labs"},
+  "gi-demo-003-rec-004": {"available_at": "2025-04-08T09:15:00Z", "exam_type": "ct_abdomen_pelvis", "workflow_id": "acute-ct-003", "workflow_stage": "requested"},
+  "gi-demo-003-rec-005": {"available_at": "2025-04-08T10:05:00Z", "exam_type": "ct_abdomen_pelvis", "workflow_id": "acute-ct-003", "workflow_stage": "procedure_completed"},
+  "gi-demo-003-rec-006": {"available_at": "2025-04-08T10:40:00Z", "exam_type": "ct_abdomen_pelvis", "workflow_id": "acute-ct-003", "workflow_stage": "report_final", "keywords": ["腹盆腔 CT", "最终报告"]},
+  "gi-demo-003-rec-007": {"available_at": "2025-04-08T12:00:00Z", "workflow_id": "acute-diverticulitis-003", "workflow_stage": "discharged"},
+  "gi-demo-003-rec-008": {"available_at": "2025-04-11T15:20:00Z", "workflow_id": "acute-diverticulitis-003", "workflow_stage": "early_followup"},
+  "gi-demo-003-rec-009": {"available_at": "2025-04-22T09:30:00Z", "workflow_id": "acute-diverticulitis-003", "workflow_stage": "clinical_resolution"},
+  "gi-demo-003-rec-010": {"available_at": "2025-04-22T09:45:00Z", "exam_type": "colonoscopy", "workflow_id": "post-diverticulitis-colonoscopy-003", "workflow_stage": "requested_and_scheduled"},
+  "gi-demo-003-rec-011": {"available_at": "2025-06-20T08:00:00Z", "exam_type": "colonoscopy", "workflow_id": "post-diverticulitis-colonoscopy-003", "workflow_stage": "procedure_completed"},
+  "gi-demo-003-rec-012": {"available_at": "2025-06-20T08:45:00Z", "exam_type": "colonoscopy", "workflow_id": "post-diverticulitis-colonoscopy-003", "workflow_stage": "report_final", "keywords": ["结肠镜", "息肉", "最终报告"]},
+  "gi-demo-003-rec-013": {"available_at": "2025-06-24T13:10:00Z", "exam_type": "colon_polyp_histopathology", "workflow_id": "post-diverticulitis-colonoscopy-003", "workflow_stage": "pathology_final", "keywords": ["横结肠息肉", "病理", "最终结果"]},
+  "gi-demo-003-rec-014": {"available_at": "2025-06-27T10:30:00Z", "workflow_id": "post-diverticulitis-colonoscopy-003", "workflow_stage": "results_review_and_surveillance_plan"},
+  "gi-demo-003-rec-015": {"available_at": "2025-10-03T09:10:00Z", "workflow_id": "acute-diverticulitis-003", "workflow_stage": "long_term_followup"}
+}

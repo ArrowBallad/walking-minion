@@ -1,0 +1,72 @@
+{
+  "captured_at": "2026-10-10T09:37:53.9624251Z",
+  "git_commit": "5491c687075301bf936f7c8628a572a4c49bbd38",
+  "worktree_clean": false,
+  "worktree_note": "The worktree already contained the user's in-progress runtime, cases, reports, prior runs, scripts, tests, trace viewer, and lockfile changes. They were preserved. The 15-run evaluation used the hashes below.",
+  "tracked_modified": [
+    "src/clinical_agent_explorer_phase1/__init__.py",
+    "src/clinical_agent_explorer_phase1/cli.py",
+    "src/clinical_agent_explorer_phase1/model_client.py",
+    "src/clinical_agent_explorer_phase1/models.py",
+    "src/clinical_agent_explorer_phase1/runtime.py",
+    "src/clinical_agent_explorer_phase1/storage.py",
+    "src/clinical_agent_explorer_phase1/tools.py",
+    "tests_phase1/support.py",
+    "tests_phase1/test_runtime_flow.py",
+    "tests_phase1/test_stopping_contract.py"
+  ],
+  "untracked_roots": [
+    "cases/gastro_demo/",
+    "cases/quick_comparison/",
+    "docs/",
+    "runs/",
+    "scripts/",
+    "tests_phase1/test_batched_tool_calls.py",
+    "tests_phase1/test_encounter_protocol.py",
+    "tests_phase1/test_multi_patient_encounters.py",
+    "trace_viewer.html",
+    "uv.lock"
+  ],
+  "runtime_version": "phase1-v4.3-context-retry",
+  "model_configuration": {
+    "adapter": "deepseek-chat-completions",
+    "base_url": "https://api.deepseek.com",
+    "requested_model": "deepseek-chat",
+    "thinking": "disabled",
+    "parallel_tool_calls": true,
+    "api_key_source": "DEEPSEEK_API_KEY environment variable"
+  },
+  "limits_per_encounter": {
+    "max_steps": 10,
+    "max_tool_calls": 12,
+    "max_tool_calls_per_batch": 4,
+    "max_prompt_bytes": 32000
+  },
+  "pre_run_validation": {
+    "case_validators": "passed",
+    "tests": 16,
+    "tests_phase1": 54,
+    "total_tests": 70,
+    "result": "passed"
+  },
+  "runtime_sha256": {
+    "src/clinical_agent_explorer_phase1/model_client.py": "B50361D6C9D2E1D68984FD5AB17F1F2252C13E927591749A313674B4CB49F506",
+    "src/clinical_agent_explorer_phase1/models.py": "155F3DB2E92A0A802C5AE489FFFD7B2297894CC4777A43C34FAF3632F726918A",
+    "src/clinical_agent_explorer_phase1/runtime.py": "44CC63E1026AFDB23E6CE5070E14BFAD56080C64737D207A8FD2DC6F4EBB6C28",
+    "src/clinical_agent_explorer_phase1/storage.py": "667E34D95BE8B9A5D2151FEA32D8AF1C10ED68864762E3A978216AF3413C4DA6",
+    "src/clinical_agent_explorer_phase1/tools.py": "C5145CC0EEC1E67941984F5C7004FEBEBC141D2734A373D06693A2D8B0726805"
+  },
+  "encounter_config_sha256": {
+    "cases/gastro_demo/gi_demo_001/encounters.json": "A4AF02F9D2DF4AA7CE914259DD7567C77543829B44D1A375480DE1D7467DBA94",
+    "cases/gastro_demo/gi_demo_001/record_metadata.json": "A2ACFC3C14BEC0AFFEDE720A1BA5551E47E54359C07B864A717209DAFF31C81F",
+    "cases/gastro_demo/gi_demo_002/encounters.json": "FC0B9FC0E7788140DF5C46D9BFBADAFED3C18E45B9284E4E12A10140FA0D5E6B",
+    "cases/gastro_demo/gi_demo_002/record_metadata.json": "955B95563D48B7D125F8235B8848F88971754392897E3D32F9475CF1559EBC89",
+    "cases/gastro_demo/gi_demo_003/encounters.json": "39812B7A3B92F6CDF27436E5F7FF4197FF5674607F6226C3ACA2F27BCA2F9310",
+    "cases/gastro_demo/gi_demo_003/record_metadata.json": "68FA45F9991BA7AE7A672689157A0E382A4F31409F48C710ED945873D9903663",
+    "cases/gastro_demo/gi_demo_004/encounters.json": "ABA554DF259A6F0ED4B27D6AE4FA6258575D4A8366D537B0A2F2D762D4AA4DF7",
+    "cases/gastro_demo/gi_demo_004/record_metadata.json": "3ACF2A654FCDC1E7369B6269796F11B414AA776F5279B10F678AB82A752F6E45",
+    "cases/gastro_demo/gi_demo_005/encounters.json": "61CE2936CB4470C5E31BC0C6A01AA5A56F50D0C71DF2F1AE4903D8F9BB17CA4F",
+    "cases/gastro_demo/gi_demo_005/record_metadata.json": "7DDD3598011B1402688FECEE3DD38401CAF7E0ECC0431B98323BC5EFC9C06C28"
+  },
+  "preservation_note": "Each of the 15 encounters was launched exactly once. No failed or clinically weak run was retried, and no prompt, budget, evidence rule, or clinical record was changed after seeing run outcomes."
+}

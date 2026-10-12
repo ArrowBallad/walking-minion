@@ -1,0 +1,19 @@
+{
+  "base_url": "https://api.deepseek.com",
+  "cases": [
+    "cough_stopping_001",
+    "dizziness_longitudinal_001",
+    "workflow_status_001"
+  ],
+  "classification": "exploratory/regression comparison; not unseen",
+  "experiment_version": "quick-comparison-v1",
+  "methods": [
+    "full_context",
+    "rag_bm25",
+    "v4"
+  ],
+  "model_requested": "deepseek-chat",
+  "v4_max_steps": 25,
+  "v4_max_tool_calls": 40,
+  "v4_runtime_version": "phase1-v4-retrieval-awareness"
+}

@@ -31,6 +31,16 @@ clinical-agent-explorer-phase1 --reset-instance --max-steps 30
 
 可变 mock 数据和患者记忆位于被 Git 忽略的 `work/`。每次运行的完整模型响应、prompt snapshot、原始工具结果、状态事件、运行状态和最终输出位于 `runs/`；需要作为演示证据的选定 trace 可以保留在仓库中。
 
+## 离线 Viewer
+
+五名 GI Demo 患者、十五个 Encounter 及历史 checkpoint 可在自包含的 `trace_viewer.html` 中回放。重新构建：
+
+```text
+python scripts/build_trace_viewer.py
+```
+
+Viewer 只读取已保存的病例和 artifacts，不调用模型。数据来源、使用方法与限制见 `docs/gastro_demo_viewer.md`。
+
 Phase 1 challenge 案例运行示例：
 
 ```text

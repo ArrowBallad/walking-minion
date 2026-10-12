@@ -1,0 +1,38 @@
+{
+  "artifact_dir": "runs\\quick_comparison\\quick-comparison-v2\\v4\\dizziness_longitudinal_001",
+  "case_id": "dizziness_longitudinal_001",
+  "method": "v4",
+  "model": [
+    "deepseek-flash"
+  ],
+  "model_calls": 6,
+  "record_ids_exposed": [
+    "dz-rec-014",
+    "dz-rec-015",
+    "dz-rec-017",
+    "dz-rec-016",
+    "dz-rec-039",
+    "dz-rec-026",
+    "dz-rec-024",
+    "dz-rec-025"
+  ],
+  "records_discovered": 18,
+  "records_exposed": 8,
+  "records_total": 40,
+  "status": "complete",
+  "stop_reason": "final_response",
+  "tool_calls": 12,
+  "tool_calls_by_name": {
+    "get_patient": 1,
+    "get_record": 8,
+    "search_records": 2,
+    "update_working_context": 1
+  },
+  "usage": {
+    "completion_tokens": 5121,
+    "prompt_cache_hit_tokens": 11392,
+    "prompt_cache_miss_tokens": 24175,
+    "prompt_tokens": 35567,
+    "total_tokens": 40688
+  }
+}

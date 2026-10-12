@@ -13,6 +13,7 @@ def utc_now() -> str:
 class PatientContext:
     known_facts: list[dict[str, Any]] = field(default_factory=list)
     unresolved_questions: list[str] = field(default_factory=list)
+    question_states: list[dict[str, Any]] = field(default_factory=list)
     conflicts: list[dict[str, Any]] = field(default_factory=list)
     relevant_record_refs: list[str] = field(default_factory=list)
 
@@ -25,12 +26,17 @@ class RunState:
     run_id: str
     patient_id: str
     task: str
+    encounter_id: str | None = None
+    as_of: str | None = None
     status: str = "running"
     step: int = 0
     discovered_record_ids: list[str] = field(default_factory=list)
     discovered_records: list[dict[str, Any]] = field(default_factory=list)
     inspected_record_ids: list[str] = field(default_factory=list)
+    record_read_counts: dict[str, int] = field(default_factory=dict)
+    record_last_read_steps: dict[str, int] = field(default_factory=dict)
     patient_record_ids: list[str] = field(default_factory=list)
+    loaded_memory_ids: list[str] = field(default_factory=list)
     patient_context: PatientContext = field(default_factory=PatientContext)
     proposed_actions: list[dict[str, Any]] = field(default_factory=list)
     verified_actions: list[dict[str, Any]] = field(default_factory=list)

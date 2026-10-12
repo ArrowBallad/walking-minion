@@ -1,0 +1,819 @@
+{
+  "experiment_id": "gastro-demo-five-patient-three-encounter-v1",
+  "completed_at": "2026-10-10T09:40:59.972219Z",
+  "git_commit": "5491c687075301bf936f7c8628a572a4c49bbd38",
+  "worktree_clean_at_freeze": false,
+  "execution_freeze": "runs/gastro_demo_multi_patient/execution_freeze.json",
+  "runtime_version": "phase1-v4.3-context-retry",
+  "model": {
+    "adapter": "deepseek-chat-completions",
+    "base_url": "https://api.deepseek.com",
+    "requested_model": "deepseek-chat",
+    "thinking": "disabled",
+    "parallel_tool_calls": true,
+    "api_key_source": "DEEPSEEK_API_KEY environment variable",
+    "provider_response_model": "deepseek-flash"
+  },
+  "limits_per_encounter": {
+    "max_steps": 10,
+    "max_tool_calls": 12,
+    "max_tool_calls_per_batch": 4,
+    "max_prompt_bytes": 32000
+  },
+  "pre_run_validation": {
+    "case_validators": "passed",
+    "tests": 16,
+    "tests_phase1": 54,
+    "total_tests": 70,
+    "result": "passed"
+  },
+  "design": {
+    "patient_count": 5,
+    "encounters_per_patient": 3,
+    "planned_run_count": 15,
+    "actual_run_count": 15,
+    "complete_count": 14,
+    "stopped_count": 1
+  },
+  "audits": {
+    "future_record_reads": 0,
+    "evaluator_reference_prompt_leaks": 0,
+    "cross_patient_memory_leaks": 0,
+    "prompt_limit_violations": 0
+  },
+  "runtime_sha256": {
+    "src/clinical_agent_explorer_phase1/model_client.py": "B50361D6C9D2E1D68984FD5AB17F1F2252C13E927591749A313674B4CB49F506",
+    "src/clinical_agent_explorer_phase1/models.py": "155F3DB2E92A0A802C5AE489FFFD7B2297894CC4777A43C34FAF3632F726918A",
+    "src/clinical_agent_explorer_phase1/runtime.py": "44CC63E1026AFDB23E6CE5070E14BFAD56080C64737D207A8FD2DC6F4EBB6C28",
+    "src/clinical_agent_explorer_phase1/storage.py": "667E34D95BE8B9A5D2151FEA32D8AF1C10ED68864762E3A978216AF3413C4DA6",
+    "src/clinical_agent_explorer_phase1/tools.py": "C5145CC0EEC1E67941984F5C7004FEBEBC141D2734A373D06693A2D8B0726805"
+  },
+  "case_sha256": {
+    "gi_demo_001": {
+      "patients.jsonl": "EC1DA350F399F47EC95ADD81A74EB4D251F911ED16BF986571DE544E238E827C",
+      "clinical_records.jsonl": "91871FC27A0D3725D3C020D66A7FB5BE9AC01D0BB20D550F3122FCA417D7B887",
+      "task.md": "A0497A14C1F15C97EFA72E9B99CDA679BAEED76534E5FB5F107344811574DCE0",
+      "encounters.json": "A4AF02F9D2DF4AA7CE914259DD7567C77543829B44D1A375480DE1D7467DBA94",
+      "record_metadata.json": "A2ACFC3C14BEC0AFFEDE720A1BA5551E47E54359C07B864A717209DAFF31C81F",
+      "evaluator_reference.md": "75DD3D5592985BAE4415D68622A2A7C76C8749B4F5A2F486DEEEBCCB5FB1923D"
+    },
+    "gi_demo_002": {
+      "patients.jsonl": "CCF61AF26957230ED382BC6CD474213C7125B9623EAA0B7A349831067C3179CB",
+      "clinical_records.jsonl": "DDFC58AC37550AEC1937D1368E48923F7E6100503664A17EAC1CB094933A9219",
+      "task.md": "1E745E1D83F663649B1E4017405A9018E16817F29F0365F072ECB2970C5319B2",
+      "encounters.json": "FC0B9FC0E7788140DF5C46D9BFBADAFED3C18E45B9284E4E12A10140FA0D5E6B",
+      "record_metadata.json": "955B95563D48B7D125F8235B8848F88971754392897E3D32F9475CF1559EBC89",
+      "evaluator_reference.md": "95B854A0456A011C3F3722BF1475B26282B3502E8C12F5055AE10C3EC051EB69"
+    },
+    "gi_demo_003": {
+      "patients.jsonl": "41814BE9A856837AD9FDC3FF501CCA5A641A1B04FA5543075954053C40BB61A1",
+      "clinical_records.jsonl": "75F0F54D581906776273EDB13B27B0875A578DB278850606D2CD787813EDB7E4",
+      "task.md": "2CD867258C6F8EDF0C52EBA0F6F26F74D26F947030AB82CB601DD5300BFBD5C5",
+      "encounters.json": "39812B7A3B92F6CDF27436E5F7FF4197FF5674607F6226C3ACA2F27BCA2F9310",
+      "record_metadata.json": "68FA45F9991BA7AE7A672689157A0E382A4F31409F48C710ED945873D9903663",
+      "evaluator_reference.md": "B1D8ABB31599696358BC99AFF09EE0F142B84F5EEDD3D9A288AD880C7213D744"
+    },
+    "gi_demo_004": {
+      "patients.jsonl": "1E74E0E93E8EB99C67C0A4FD0E990E92AA383ABBD06D2C73376A8C4267F90C4B",
+      "clinical_records.jsonl": "E580B905E881DDA2A47BE38F1BBE500AA89CDF5FB6C066626455FFFCE6584F1E",
+      "task.md": "E0783DEADD0E713C3AE235C60E4A9BDCBE670313B9731331E190E9F29BB8C43E",
+      "encounters.json": "ABA554DF259A6F0ED4B27D6AE4FA6258575D4A8366D537B0A2F2D762D4AA4DF7",
+      "record_metadata.json": "3ACF2A654FCDC1E7369B6269796F11B414AA776F5279B10F678AB82A752F6E45",
+      "evaluator_reference.md": "3F563CC6995954EE4CCAB33B3B59B14E1F7C2C147DC5AB17C3D5A378194C34B2"
+    },
+    "gi_demo_005": {
+      "patients.jsonl": "ED0BF99EA1863CDBB999D17F55C8C385B5B75EEFDCF738D36770930089EC67F2",
+      "clinical_records.jsonl": "A4C934AF828EC54DFC7261ED57B46084E5D344EA617B25EBB1DD637B66302EEB",
+      "task.md": "F5479F19B4DBA5F7530BE8949F6369FE168256674CA8638D772E1F082EFC25B9",
+      "encounters.json": "61CE2936CB4470C5E31BC0C6A01AA5A56F50D0C71DF2F1AE4903D8F9BB17CA4F",
+      "record_metadata.json": "7DDD3598011B1402688FECEE3DD38401CAF7E0ECC0431B98323BC5EFC9C06C28",
+      "evaluator_reference.md": "27081DFDB9D14CCBFA24A031984142A61D9D5F722529584849D98360B53FD731"
+    }
+  },
+  "run_metrics": "runs/gastro_demo_multi_patient/run_metrics.json",
+  "evaluation_report": "docs/gastro_demo_review/gi_demo_multi_patient_evaluation.md",
+  "deterministic_validator": "scripts/validate_gastro_multi_patient_encounters.py",
+  "runs": [
+    {
+      "patient_id": "GI-DEMO-001",
+      "encounter_id": "GI-DEMO-001-E01",
+      "as_of": "2025-01-24T23:59:59Z",
+      "available_record_count": 5,
+      "run_id": "p1-run-b64359dd704c",
+      "run_path": "runs/gastro_demo_multi_patient/GI-DEMO-001/E01/p1-run-b64359dd704c",
+      "status": "complete",
+      "stop_reason": "final_response",
+      "model_calls": 4,
+      "tool_calls": {
+        "requested": 8,
+        "executed": 8,
+        "rejected": 0
+      },
+      "unique_full_record_reads": 5,
+      "duplicate_full_record_reads": 0,
+      "working_context": {
+        "calls": 1,
+        "successes": 1,
+        "failures": 0,
+        "final_findings": 4
+      },
+      "memory": {
+        "loaded": 0,
+        "written": 3,
+        "rejected": 0,
+        "transitions": 0
+      },
+      "max_prompt_bytes": 23620,
+      "agent_final_exists": true,
+      "token_usage": {
+        "completion_tokens": 2890,
+        "prompt_cache_hit_tokens": 9088,
+        "prompt_cache_miss_tokens": 11993,
+        "prompt_tokens": 21081,
+        "total_tokens": 23971
+      },
+      "artifact_sha256": {
+        "metadata.json": "3E8EA68AB4A9190F7343FBA9809D3B189BD8A07AC297EF336BD11B41220D18AA",
+        "run_state.json": "55F043106BF7669C0122A4033020359679195C0CC14216C826E3C3722A21FCCD",
+        "prompt_snapshots.jsonl": "824D5A3BB5A957F138D864B710D2900F5B5992BCA8A3AE04D34E0FCBEDC40D31",
+        "model_calls.jsonl": "57101241CEC204B3D887A4FD209365D6F40AF491641214EDEF2753C14319D883",
+        "tool_calls.jsonl": "7632A5E562545E29104E332D44B01C60BD8DC0E31B62C49E69F633655172010E",
+        "state_events.jsonl": "06E12B94F29AAA0F1A2761B663FE9E41C8F8525A051725FA28C9A536E5C0D12A",
+        "final.md": "E94771535472F54E189C62C57E873A15811EB10919BE17FDB989118C2AC89844"
+      }
+    },
+    {
+      "patient_id": "GI-DEMO-001",
+      "encounter_id": "GI-DEMO-001-E02",
+      "as_of": "2025-03-07T23:59:59Z",
+      "available_record_count": 13,
+      "run_id": "p1-run-609c85a0e2d2",
+      "run_path": "runs/gastro_demo_multi_patient/GI-DEMO-001/E02/p1-run-609c85a0e2d2",
+      "status": "complete",
+      "stop_reason": "final_response",
+      "model_calls": 6,
+      "tool_calls": {
+        "requested": 12,
+        "executed": 12,
+        "rejected": 0
+      },
+      "unique_full_record_reads": 10,
+      "duplicate_full_record_reads": 0,
+      "working_context": {
+        "calls": 0,
+        "successes": 0,
+        "failures": 0,
+        "final_findings": 0
+      },
+      "memory": {
+        "loaded": 3,
+        "written": 3,
+        "rejected": 0,
+        "transitions": 1
+      },
+      "max_prompt_bytes": 28525,
+      "agent_final_exists": true,
+      "token_usage": {
+        "completion_tokens": 5830,
+        "prompt_cache_hit_tokens": 13440,
+        "prompt_cache_miss_tokens": 27600,
+        "prompt_tokens": 41040,
+        "total_tokens": 46870
+      },
+      "artifact_sha256": {
+        "metadata.json": "F772E766F5CB5BBB4D0F940DE1EB7F368F714A7EC90350ECC6B842CB91ADDF3A",
+        "run_state.json": "6CC1A25E5D9DA12BAEB1B57D2AA30BA9024C7CA526624AA0156A3B1FACD60043",
+        "prompt_snapshots.jsonl": "FCF48FF56A3BFC8E4969D3F1E311A34AA72AA35C1C4BD86CB2FA22DA967A3C28",
+        "model_calls.jsonl": "A8BA46A019662AC1CF2EF9C374A9E2959BB494408D1B0B943A36F7CB36D7A347",
+        "tool_calls.jsonl": "995C6F1CB74919D94E98122CD5DA037E1BD94575EF72429F05109B9834DD659E",
+        "state_events.jsonl": "ED93FD0C3BFA74E23BD1A0CBC2D08CDDDE150BBAB277961F4A52A34F45DA48C2",
+        "final.md": "3BF1DB3B4F9406C68DD48E0AA55FA8859371FA7D62CAE8A10DF3EA7FA0148302"
+      }
+    },
+    {
+      "patient_id": "GI-DEMO-001",
+      "encounter_id": "GI-DEMO-001-E03",
+      "as_of": "2025-09-20T23:59:59Z",
+      "available_record_count": 18,
+      "run_id": "p1-run-1c58377f6412",
+      "run_path": "runs/gastro_demo_multi_patient/GI-DEMO-001/E03/p1-run-1c58377f6412",
+      "status": "complete",
+      "stop_reason": "final_response",
+      "model_calls": 5,
+      "tool_calls": {
+        "requested": 11,
+        "executed": 11,
+        "rejected": 0
+      },
+      "unique_full_record_reads": 7,
+      "duplicate_full_record_reads": 2,
+      "working_context": {
+        "calls": 0,
+        "successes": 0,
+        "failures": 0,
+        "final_findings": 0
+      },
+      "memory": {
+        "loaded": 6,
+        "written": 6,
+        "rejected": 0,
+        "transitions": 3
+      },
+      "max_prompt_bytes": 31774,
+      "agent_final_exists": true,
+      "token_usage": {
+        "completion_tokens": 5552,
+        "prompt_cache_hit_tokens": 11520,
+        "prompt_cache_miss_tokens": 26618,
+        "prompt_tokens": 38138,
+        "total_tokens": 43690
+      },
+      "artifact_sha256": {
+        "metadata.json": "622B0D9B65A32B123F942ECF5AF2EAB4D92C8D06F58C534E819F2C5CEA0988E5",
+        "run_state.json": "8766D81FC5B9333198B72DB16CDDDBB0AD2086B8A0F43E0728CB0A66B11FBDF3",
+        "prompt_snapshots.jsonl": "5F612471A6A741A9CFBAC8E7F004A2649F4BDE26468AD5EC8B70D6AA492B1D91",
+        "model_calls.jsonl": "0B4EE6F303B8FB88C4A811953C9D3126DFC04E31D41FA0FA58174557C977E7B5",
+        "tool_calls.jsonl": "C833B565A23B7DA462236DBDEFC6C6F776A44FF7E1E434478DD9EC9F73272790",
+        "state_events.jsonl": "9E5E95FAE65AB1DF6A95A5C5952CB987A7AD0F5BF5779174F84BEFCF958E0704",
+        "final.md": "7CCB4F6146C249A5C29F05E0F1EF3C2D34DF4B344BB8238BD0F8A930E528709C"
+      }
+    },
+    {
+      "patient_id": "GI-DEMO-002",
+      "encounter_id": "GI-DEMO-002-E01",
+      "as_of": "2025-05-06T23:59:59Z",
+      "available_record_count": 5,
+      "run_id": "p1-run-93f2eae300e0",
+      "run_path": "runs/gastro_demo_multi_patient/GI-DEMO-002/E01/p1-run-93f2eae300e0",
+      "status": "complete",
+      "stop_reason": "final_response",
+      "model_calls": 4,
+      "tool_calls": {
+        "requested": 7,
+        "executed": 7,
+        "rejected": 0
+      },
+      "unique_full_record_reads": 5,
+      "duplicate_full_record_reads": 0,
+      "working_context": {
+        "calls": 0,
+        "successes": 0,
+        "failures": 0,
+        "final_findings": 0
+      },
+      "memory": {
+        "loaded": 0,
+        "written": 2,
+        "rejected": 0,
+        "transitions": 0
+      },
+      "max_prompt_bytes": 21958,
+      "agent_final_exists": true,
+      "token_usage": {
+        "completion_tokens": 1901,
+        "prompt_cache_hit_tokens": 9088,
+        "prompt_cache_miss_tokens": 10313,
+        "prompt_tokens": 19401,
+        "total_tokens": 21302
+      },
+      "artifact_sha256": {
+        "metadata.json": "5614336FE676D0564AD61028A0A755001D3C4425ECDEC2D01F3057AE459F9A82",
+        "run_state.json": "875E7505F8524A7B94DB165CC70DAAD062C469DD47D79881747AD00D2380B95E",
+        "prompt_snapshots.jsonl": "437F8CB2D14D50BC53641A86F1C38E0A979C99F599E66EA12FA4B1DD70B970CC",
+        "model_calls.jsonl": "16FC5F0EA377638476FFE23D3F248B282E5CFCEA2E1304B95D92C9127316B044",
+        "tool_calls.jsonl": "07476E01EB72310C8D92F701E90993DAC90D21E2161B4022C9F5D3B77FE17C15",
+        "state_events.jsonl": "B6AC97FC5AD96A3724AF67BDE26F56853D74B4CA4532EF6A32C2135A691DBE9A",
+        "final.md": "81DDF97B639928B85A7A5639994853E579BAB55B360E2BB54CF90B27047E8E16"
+      }
+    },
+    {
+      "patient_id": "GI-DEMO-002",
+      "encounter_id": "GI-DEMO-002-E02",
+      "as_of": "2025-06-27T23:59:59Z",
+      "available_record_count": 12,
+      "run_id": "p1-run-1a9e50725be7",
+      "run_path": "runs/gastro_demo_multi_patient/GI-DEMO-002/E02/p1-run-1a9e50725be7",
+      "status": "complete",
+      "stop_reason": "final_response",
+      "model_calls": 3,
+      "tool_calls": {
+        "requested": 6,
+        "executed": 6,
+        "rejected": 0
+      },
+      "unique_full_record_reads": 4,
+      "duplicate_full_record_reads": 0,
+      "working_context": {
+        "calls": 0,
+        "successes": 0,
+        "failures": 0,
+        "final_findings": 0
+      },
+      "memory": {
+        "loaded": 2,
+        "written": 2,
+        "rejected": 0,
+        "transitions": 0
+      },
+      "max_prompt_bytes": 27622,
+      "agent_final_exists": true,
+      "token_usage": {
+        "completion_tokens": 2399,
+        "prompt_cache_hit_tokens": 6912,
+        "prompt_cache_miss_tokens": 11916,
+        "prompt_tokens": 18828,
+        "total_tokens": 21227
+      },
+      "artifact_sha256": {
+        "metadata.json": "2B8F8726253FEDDE24BB82BB9C8215EAFDD780F0C68AE741821BC31B80146757",
+        "run_state.json": "0AD99973E1785DDBCBFA9D256E311E5FE52F2F9B1212226B207C280528305C3D",
+        "prompt_snapshots.jsonl": "A10406B29AD04361DDEB52DCD3C5BDC8BE38BCC3E4710DD673AF2FB34CA97ADF",
+        "model_calls.jsonl": "A17CC3646DD6C6E48942FD97513F1D48FABDECD61FC06C04E3E4D8A0D89048AD",
+        "tool_calls.jsonl": "32B218F122766D1283A8BD2E7E9F03E5FDD478F38AAB11A2BE06C6B4CCD5DA5E",
+        "state_events.jsonl": "B382C838DE72ECAE13426431B17CFBEBAFF9A10E395D5EBBF47B4F56CC6CBCA6",
+        "final.md": "010D4B60999878A8D503E3E63A57A3B79665192D86A8DF9CA1038A332903D069"
+      }
+    },
+    {
+      "patient_id": "GI-DEMO-002",
+      "encounter_id": "GI-DEMO-002-E03",
+      "as_of": "2025-10-17T23:59:59Z",
+      "available_record_count": 18,
+      "run_id": "p1-run-c7aa68fb719b",
+      "run_path": "runs/gastro_demo_multi_patient/GI-DEMO-002/E03/p1-run-c7aa68fb719b",
+      "status": "complete",
+      "stop_reason": "final_response",
+      "model_calls": 5,
+      "tool_calls": {
+        "requested": 11,
+        "executed": 11,
+        "rejected": 0
+      },
+      "unique_full_record_reads": 6,
+      "duplicate_full_record_reads": 2,
+      "working_context": {
+        "calls": 0,
+        "successes": 0,
+        "failures": 0,
+        "final_findings": 0
+      },
+      "memory": {
+        "loaded": 4,
+        "written": 3,
+        "rejected": 0,
+        "transitions": 1
+      },
+      "max_prompt_bytes": 31833,
+      "agent_final_exists": true,
+      "token_usage": {
+        "completion_tokens": 5913,
+        "prompt_cache_hit_tokens": 11264,
+        "prompt_cache_miss_tokens": 24835,
+        "prompt_tokens": 36099,
+        "total_tokens": 42012
+      },
+      "artifact_sha256": {
+        "metadata.json": "DC15A6C4478634A1E13C44F956786101D63FAA37F11DE0359C7FCB65E427C392",
+        "run_state.json": "0AA836C5E7695B8B151EC38867230CD7625D70D6BF18512CAC55C2AD618E0638",
+        "prompt_snapshots.jsonl": "3D7ECA56B78891B0FE5091F317E64C3D575D70A20CB6B05E30CDC77BFD1D1ABF",
+        "model_calls.jsonl": "4146EC4FCDD1C5B566798D0DA086285EC508E0A4A6987D19EF29C6A2FD0F774F",
+        "tool_calls.jsonl": "B2F1802B5600F6CB7202979187AC782DE965EF37AEF3B8BA4E63B89119DD4567",
+        "state_events.jsonl": "D2EEB6F20A925205C3D7A16597C0A4C5C588DFE5C1C9D4F002E4EFD4F7ECAE82",
+        "final.md": "1AF689B37AF717EBC4B9E3112899BC6E4D361D5B4598C801FA50AB2EFF7799F2"
+      }
+    },
+    {
+      "patient_id": "GI-DEMO-003",
+      "encounter_id": "GI-DEMO-003-E01",
+      "as_of": "2025-04-08T23:59:59Z",
+      "available_record_count": 7,
+      "run_id": "p1-run-230628957c6f",
+      "run_path": "runs/gastro_demo_multi_patient/GI-DEMO-003/E01/p1-run-230628957c6f",
+      "status": "stopped",
+      "stop_reason": "tool_call_limit",
+      "model_calls": 5,
+      "tool_calls": {
+        "requested": 13,
+        "executed": 9,
+        "rejected": 4
+      },
+      "unique_full_record_reads": 7,
+      "duplicate_full_record_reads": 0,
+      "working_context": {
+        "calls": 0,
+        "successes": 0,
+        "failures": 0,
+        "final_findings": 0
+      },
+      "memory": {
+        "loaded": 0,
+        "written": 0,
+        "rejected": 0,
+        "transitions": 0
+      },
+      "max_prompt_bytes": 23515,
+      "agent_final_exists": false,
+      "token_usage": {
+        "completion_tokens": 1259,
+        "prompt_cache_hit_tokens": 11264,
+        "prompt_cache_miss_tokens": 15127,
+        "prompt_tokens": 26391,
+        "total_tokens": 27650
+      },
+      "artifact_sha256": {
+        "metadata.json": "A5DAAC8773795EE583254FF6A29B815613396E8809586B7E7A50B1C63B0FF789",
+        "run_state.json": "959438FADC6EDBD224AF389D68B301B0F2F6FF88F99FF4F966C46D6754F03FA5",
+        "prompt_snapshots.jsonl": "76D0D5FC969AE6132AE82EEC0B791FAF760A9B9BD17ED3C52FFE7084F009BCD3",
+        "model_calls.jsonl": "195C036084F5BA86398A40F6A73C670A5EFD5958CA358525DEF3AF440C29D144",
+        "tool_calls.jsonl": "06F7068A3F683189F428031A82D2C23E258170133CECA49E44CA08BB55A4EF0B",
+        "state_events.jsonl": "00583A272108CE1BE7D61380E26EB8F9F8D9E4D5F4884E13E3C87A51D0EC81AB",
+        "final.md": "D4A37E15584043A5701DEE27B4518644A52551A958A93A417024F7B697D4B8A2"
+      }
+    },
+    {
+      "patient_id": "GI-DEMO-003",
+      "encounter_id": "GI-DEMO-003-E02",
+      "as_of": "2025-06-24T23:59:59Z",
+      "available_record_count": 13,
+      "run_id": "p1-run-027e8701faeb",
+      "run_path": "runs/gastro_demo_multi_patient/GI-DEMO-003/E02/p1-run-027e8701faeb",
+      "status": "complete",
+      "stop_reason": "final_response",
+      "model_calls": 7,
+      "tool_calls": {
+        "requested": 12,
+        "executed": 12,
+        "rejected": 0
+      },
+      "unique_full_record_reads": 7,
+      "duplicate_full_record_reads": 2,
+      "working_context": {
+        "calls": 0,
+        "successes": 0,
+        "failures": 0,
+        "final_findings": 0
+      },
+      "memory": {
+        "loaded": 0,
+        "written": 1,
+        "rejected": 1,
+        "transitions": 0
+      },
+      "max_prompt_bytes": 26687,
+      "agent_final_exists": true,
+      "token_usage": {
+        "completion_tokens": 6711,
+        "prompt_cache_hit_tokens": 15744,
+        "prompt_cache_miss_tokens": 26899,
+        "prompt_tokens": 42643,
+        "total_tokens": 49354
+      },
+      "artifact_sha256": {
+        "metadata.json": "F38C2923B9674F178BD9AAAB1A04CA9D3038F926737214283D3DD22C740E9F56",
+        "run_state.json": "B88EC248A3D5A6DFB52F3B293C7663B1D43D624ED84192471A2ADE0FDE6C2FB6",
+        "prompt_snapshots.jsonl": "17458B6BB3F52D1A8B1DD60EE328E0FD71DDBF5D1D29CCF6260A2F2997DF0D09",
+        "model_calls.jsonl": "2D01D53ACD868627259AF5DFC1FFA4F7C61A2AA2D20C2F31002860DA03A3AF3C",
+        "tool_calls.jsonl": "24C0BD77D316146DA815F996E47C92C7197C3AD2BCC53EA5986C10AA52DBB1E2",
+        "state_events.jsonl": "F63CA5BD8B502637C800A5DBE604E929DD4A66BE12CC7C70F87C2633161E7888",
+        "final.md": "C65DEC5F2D66699A8225F15B96778A0077734F455D341DB8ABCF5CF8F74D8300"
+      }
+    },
+    {
+      "patient_id": "GI-DEMO-003",
+      "encounter_id": "GI-DEMO-003-E03",
+      "as_of": "2025-10-03T23:59:59Z",
+      "available_record_count": 15,
+      "run_id": "p1-run-fcbc1e04a93e",
+      "run_path": "runs/gastro_demo_multi_patient/GI-DEMO-003/E03/p1-run-fcbc1e04a93e",
+      "status": "complete",
+      "stop_reason": "final_response",
+      "model_calls": 5,
+      "tool_calls": {
+        "requested": 11,
+        "executed": 11,
+        "rejected": 0
+      },
+      "unique_full_record_reads": 6,
+      "duplicate_full_record_reads": 2,
+      "working_context": {
+        "calls": 0,
+        "successes": 0,
+        "failures": 0,
+        "final_findings": 0
+      },
+      "memory": {
+        "loaded": 1,
+        "written": 2,
+        "rejected": 0,
+        "transitions": 0
+      },
+      "max_prompt_bytes": 28550,
+      "agent_final_exists": true,
+      "token_usage": {
+        "completion_tokens": 3667,
+        "prompt_cache_hit_tokens": 11392,
+        "prompt_cache_miss_tokens": 20719,
+        "prompt_tokens": 32111,
+        "total_tokens": 35778
+      },
+      "artifact_sha256": {
+        "metadata.json": "F71E995F809ECF55C8CE7680575185669E6F4C46D22A6E698D3E7764838C55F1",
+        "run_state.json": "6266AC0AA804FEEBAD9E728ABE42AE5CECD075186085128DF69D008F3FF318BC",
+        "prompt_snapshots.jsonl": "DE42017B5DFF182E561D07B98818F72C8C767F88C69AF485FB24C058E8AA0E4F",
+        "model_calls.jsonl": "58E012BC961E87DA69EBC913876CF51486D7BD2847908D5DAA1FEA72D1D9142C",
+        "tool_calls.jsonl": "A0DB70F1B8C267D3BCD1AE9E513A26AB9662A0427B4B0A3F4BAF861BAE17FEF5",
+        "state_events.jsonl": "BF08B11CDEDF8EC1DAB4C5073FC05C66ABAFF83F402342126023D6B3E79CF935",
+        "final.md": "8AE4DB92E34892AA036E4E809BF2E17EDF238D22D00D6A8865B8582E2E6172D5"
+      }
+    },
+    {
+      "patient_id": "GI-DEMO-004",
+      "encounter_id": "GI-DEMO-004-E01",
+      "as_of": "2025-03-05T23:59:59Z",
+      "available_record_count": 4,
+      "run_id": "p1-run-abbcf0911902",
+      "run_path": "runs/gastro_demo_multi_patient/GI-DEMO-004/E01/p1-run-abbcf0911902",
+      "status": "complete",
+      "stop_reason": "final_response",
+      "model_calls": 5,
+      "tool_calls": {
+        "requested": 9,
+        "executed": 9,
+        "rejected": 1
+      },
+      "unique_full_record_reads": 4,
+      "duplicate_full_record_reads": 0,
+      "working_context": {
+        "calls": 2,
+        "successes": 1,
+        "failures": 1,
+        "final_findings": 4
+      },
+      "memory": {
+        "loaded": 0,
+        "written": 0,
+        "rejected": 0,
+        "transitions": 0
+      },
+      "max_prompt_bytes": 24458,
+      "agent_final_exists": true,
+      "token_usage": {
+        "completion_tokens": 2586,
+        "prompt_cache_hit_tokens": 11648,
+        "prompt_cache_miss_tokens": 15117,
+        "prompt_tokens": 26765,
+        "total_tokens": 29351
+      },
+      "artifact_sha256": {
+        "metadata.json": "761A87C123617152231C05EC799D08C36AC843D492BACCF7D23A671273534CF8",
+        "run_state.json": "C0D9C4A97A33D73B9E415990D1EE849BE5C03207D010D5740E17695BE2B5246E",
+        "prompt_snapshots.jsonl": "8EA031A8E0C8801408A012BCB9A6D4AC70E7A23FABCF0BC96677CE67315F6B56",
+        "model_calls.jsonl": "44136EADB9A13ED0D94315075A7FF514CC55D3217D9F71E0365B83669CAC43B3",
+        "tool_calls.jsonl": "54315F4C4DEF773157854AD4F79CC1404167FF769039CA269C70594EF99EE73E",
+        "state_events.jsonl": "8178A5E03F7AEA04FEB7A47C7E68E6CD2B12EE65CB20026E1C0FEE3A593AE1B0",
+        "final.md": "F51B55443A51C87F0C9A8793A6B18FF993F7ECBECA2386F6E23285262C65EB74"
+      }
+    },
+    {
+      "patient_id": "GI-DEMO-004",
+      "encounter_id": "GI-DEMO-004-E02",
+      "as_of": "2025-05-10T23:59:59Z",
+      "available_record_count": 13,
+      "run_id": "p1-run-66a5f4520f81",
+      "run_path": "runs/gastro_demo_multi_patient/GI-DEMO-004/E02/p1-run-66a5f4520f81",
+      "status": "complete",
+      "stop_reason": "final_response",
+      "model_calls": 3,
+      "tool_calls": {
+        "requested": 6,
+        "executed": 6,
+        "rejected": 0
+      },
+      "unique_full_record_reads": 4,
+      "duplicate_full_record_reads": 0,
+      "working_context": {
+        "calls": 0,
+        "successes": 0,
+        "failures": 0,
+        "final_findings": 0
+      },
+      "memory": {
+        "loaded": 0,
+        "written": 3,
+        "rejected": 0,
+        "transitions": 0
+      },
+      "max_prompt_bytes": 26936,
+      "agent_final_exists": true,
+      "token_usage": {
+        "completion_tokens": 1987,
+        "prompt_cache_hit_tokens": 6912,
+        "prompt_cache_miss_tokens": 10812,
+        "prompt_tokens": 17724,
+        "total_tokens": 19711
+      },
+      "artifact_sha256": {
+        "metadata.json": "E81713A6A93354A61F931A21FB9DE3FB5C850E7C7639B1ABDE6DCB2059E17998",
+        "run_state.json": "73E86A9F511E19D6207ABEFB9C369772755A8B46D5D7E085232A75DD7939AF3B",
+        "prompt_snapshots.jsonl": "298A0CFE670864C97E322BA0D841700B0664F66D685D046DB10D97AB6EF34180",
+        "model_calls.jsonl": "75D798441045ECDD10195F72320ED382B5B2A18AC17DC132A51F82B7853DDFF0",
+        "tool_calls.jsonl": "3A0B3573338E69C83620C00B22EDB7A7FECC232AFDC42938015BD192D4D387C3",
+        "state_events.jsonl": "431FD0690A57E97710B279B272EDD92893BFE12D6B7818263E3D4869262D12AF",
+        "final.md": "C4B79A0A6273C1331FC6A3FBD00391FD5B633E8C988B56C3A965A0230EB87E36"
+      }
+    },
+    {
+      "patient_id": "GI-DEMO-004",
+      "encounter_id": "GI-DEMO-004-E03",
+      "as_of": "2025-12-19T23:59:59Z",
+      "available_record_count": 18,
+      "run_id": "p1-run-c64101d39b1f",
+      "run_path": "runs/gastro_demo_multi_patient/GI-DEMO-004/E03/p1-run-c64101d39b1f",
+      "status": "complete",
+      "stop_reason": "final_response",
+      "model_calls": 5,
+      "tool_calls": {
+        "requested": 12,
+        "executed": 12,
+        "rejected": 0
+      },
+      "unique_full_record_reads": 5,
+      "duplicate_full_record_reads": 4,
+      "working_context": {
+        "calls": 0,
+        "successes": 0,
+        "failures": 0,
+        "final_findings": 0
+      },
+      "memory": {
+        "loaded": 3,
+        "written": 2,
+        "rejected": 0,
+        "transitions": 0
+      },
+      "max_prompt_bytes": 31023,
+      "agent_final_exists": true,
+      "token_usage": {
+        "completion_tokens": 4617,
+        "prompt_cache_hit_tokens": 11392,
+        "prompt_cache_miss_tokens": 23247,
+        "prompt_tokens": 34639,
+        "total_tokens": 39256
+      },
+      "artifact_sha256": {
+        "metadata.json": "3B8F78795A3F3CFFD7FE8F6E7BC39BE32A82B32C7EA6EE5E01AA86BB96A8DBA6",
+        "run_state.json": "1454F07E3877F805B732E5D269654622D5898170C938B58533CE1D8172E495DA",
+        "prompt_snapshots.jsonl": "B7A3ED6892C5B174D93A4776662645B82081FD84B3BD8259DAC538ACA12BA7B7",
+        "model_calls.jsonl": "49D8FD6CD45B10C7241C31AB0A9389E5082CC90F91E45DA88AA6A0F8B0820B5C",
+        "tool_calls.jsonl": "BC68A8B43034C08A51768A8F14EE9F41EF12EA2762A95BBD4E7DD12B38D3338D",
+        "state_events.jsonl": "E635DD566C3C6657144478FDF5EA41EAD41CA88FFA040EB21E7D334547156ECA",
+        "final.md": "8B4746524802BB526AF800F991AB2E96AC8D0FA81FFD901229AAB13252463BFF"
+      }
+    },
+    {
+      "patient_id": "GI-DEMO-005",
+      "encounter_id": "GI-DEMO-005-E01",
+      "as_of": "2024-12-06T23:59:59Z",
+      "available_record_count": 7,
+      "run_id": "p1-run-7fdad47611c1",
+      "run_path": "runs/gastro_demo_multi_patient/GI-DEMO-005/E01/p1-run-7fdad47611c1",
+      "status": "complete",
+      "stop_reason": "final_response",
+      "model_calls": 3,
+      "tool_calls": {
+        "requested": 6,
+        "executed": 6,
+        "rejected": 0
+      },
+      "unique_full_record_reads": 4,
+      "duplicate_full_record_reads": 0,
+      "working_context": {
+        "calls": 0,
+        "successes": 0,
+        "failures": 0,
+        "final_findings": 0
+      },
+      "memory": {
+        "loaded": 0,
+        "written": 0,
+        "rejected": 0,
+        "transitions": 0
+      },
+      "max_prompt_bytes": 23454,
+      "agent_final_exists": true,
+      "token_usage": {
+        "completion_tokens": 1621,
+        "prompt_cache_hit_tokens": 6912,
+        "prompt_cache_miss_tokens": 8546,
+        "prompt_tokens": 15458,
+        "total_tokens": 17079
+      },
+      "artifact_sha256": {
+        "metadata.json": "E06D5FC271330AE8501D4186182CFD20C3ABFD9A9B94D159EAAED8C904604A30",
+        "run_state.json": "82CA8B5675ABBDEC2B26EBC8DDE384693A7B631584E790C31B4EDABFA5CC207B",
+        "prompt_snapshots.jsonl": "E35938F0F53373FC55CC3B8F6688C7330D85AE318DFF2A9A3372A54DACFE0D2C",
+        "model_calls.jsonl": "5B52A97D20C3F3842C2F80F7F3D7EA123C569F6C13D6202A551EDD736472E170",
+        "tool_calls.jsonl": "CE97FAC61E991EE69B13315F837302FFEFD1C066E58E10BF8BC65EFAB764420C",
+        "state_events.jsonl": "0064CF9214841356F8BDE6F704E5E9F816C4C4B00BB21D556E2235B342793D01",
+        "final.md": "1E9BE8B2FBE323F6108FD9C2D7B0C67DE9BBDD52E524327FD7A397702E049995"
+      }
+    },
+    {
+      "patient_id": "GI-DEMO-005",
+      "encounter_id": "GI-DEMO-005-E02",
+      "as_of": "2025-01-13T23:59:59Z",
+      "available_record_count": 15,
+      "run_id": "p1-run-52ed1bacf63f",
+      "run_path": "runs/gastro_demo_multi_patient/GI-DEMO-005/E02/p1-run-52ed1bacf63f",
+      "status": "complete",
+      "stop_reason": "final_response",
+      "model_calls": 5,
+      "tool_calls": {
+        "requested": 11,
+        "executed": 11,
+        "rejected": 0
+      },
+      "unique_full_record_reads": 7,
+      "duplicate_full_record_reads": 0,
+      "working_context": {
+        "calls": 1,
+        "successes": 1,
+        "failures": 0,
+        "final_findings": 5
+      },
+      "memory": {
+        "loaded": 0,
+        "written": 2,
+        "rejected": 0,
+        "transitions": 0
+      },
+      "max_prompt_bytes": 27961,
+      "agent_final_exists": true,
+      "token_usage": {
+        "completion_tokens": 2891,
+        "prompt_cache_hit_tokens": 11392,
+        "prompt_cache_miss_tokens": 21247,
+        "prompt_tokens": 32639,
+        "total_tokens": 35530
+      },
+      "artifact_sha256": {
+        "metadata.json": "5D89452D6E170704D01AB1456C79239341088D93364FB0364F44B6A1B2E34793",
+        "run_state.json": "3A6BFE8CC73F8A734C81D1D786D33BB4943A461412528BEED497259EC4633AD0",
+        "prompt_snapshots.jsonl": "39B9469884E71FDFCB0DC4C4097241BC0EB82B3D29500F772AAA917762D7D099",
+        "model_calls.jsonl": "446584535DDB8D61EFA8F2A7D1531ADF6993D8F751F5B3C50A3E755F7DC27505",
+        "tool_calls.jsonl": "3440BBB001457003B8463FA554C90DABE4AC59C91EBA8B75A292E9BEDBCB87C4",
+        "state_events.jsonl": "71337BE3849F4C18C1B8FED9C55ABF24AD8167377C0FFE771B9D6FAF72744846",
+        "final.md": "9B5198D225921DCA2B9EACD25B1C01CA08A4B9EBC6C93545030339A84BC8B91D"
+      }
+    },
+    {
+      "patient_id": "GI-DEMO-005",
+      "encounter_id": "GI-DEMO-005-E03",
+      "as_of": "2025-01-28T23:59:59Z",
+      "available_record_count": 18,
+      "run_id": "p1-run-d451c2d3278c",
+      "run_path": "runs/gastro_demo_multi_patient/GI-DEMO-005/E03/p1-run-d451c2d3278c",
+      "status": "complete",
+      "stop_reason": "final_response",
+      "model_calls": 6,
+      "tool_calls": {
+        "requested": 12,
+        "executed": 12,
+        "rejected": 0
+      },
+      "unique_full_record_reads": 4,
+      "duplicate_full_record_reads": 4,
+      "working_context": {
+        "calls": 0,
+        "successes": 0,
+        "failures": 0,
+        "final_findings": 0
+      },
+      "memory": {
+        "loaded": 2,
+        "written": 3,
+        "rejected": 0,
+        "transitions": 1
+      },
+      "max_prompt_bytes": 23910,
+      "agent_final_exists": true,
+      "token_usage": {
+        "completion_tokens": 4065,
+        "prompt_cache_hit_tokens": 14080,
+        "prompt_cache_miss_tokens": 18986,
+        "prompt_tokens": 33066,
+        "total_tokens": 37131
+      },
+      "artifact_sha256": {
+        "metadata.json": "C660A4CF8E29560DF0E38444B53623EACF268B11BCF8FD17D117FAF0C43177F4",
+        "run_state.json": "5B9231A3BFAC5C160E157709181CA72FC3283C6CDF39AB05E8397637D2446072",
+        "prompt_snapshots.jsonl": "D8828E7DA1FC14B553AABF699BA901EE4284A13FE38D6EAED74359250FBECE23",
+        "model_calls.jsonl": "265BAAB41E3199ABA08A7A357434DDC3DEBF8D899E885DE63B811293CB010AE9",
+        "tool_calls.jsonl": "B7AFE569E5962701882F8BD7C5504F34B8BF965D9BCF5CBABD3CDC802B9D2135",
+        "state_events.jsonl": "E577957D04786F3F3A606E0FD00840A59BEE77082A66CE6F0A18F7A94109D536",
+        "final.md": "74CF14327C1B3F3634CCA791B6178C8C6CE392A99F006CC55AA9A1EDB294B86A"
+      }
+    }
+  ],
+  "preservation_note": "Each of the 15 encounters was launched exactly once. No failed or clinically weak run was retried, and no prompt, budget, evidence rule, or clinical record was changed after seeing run outcomes."
+}

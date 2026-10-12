@@ -1,0 +1,38 @@
+{
+  "artifact_dir": "runs\\quick_comparison\\quick-comparison-v1\\v4\\cough_stopping_001",
+  "case_id": "cough_stopping_001",
+  "method": "v4",
+  "model": [
+    "deepseek-flash"
+  ],
+  "model_calls": 20,
+  "record_ids_exposed": [
+    "cs-rec-025",
+    "cs-rec-024",
+    "cs-rec-029",
+    "cs-rec-031",
+    "cs-rec-028",
+    "cs-rec-026",
+    "cs-rec-030",
+    "cs-rec-032"
+  ],
+  "records_discovered": 20,
+  "records_exposed": 8,
+  "records_total": 35,
+  "status": "complete",
+  "stop_reason": "final_response",
+  "tool_calls": 16,
+  "tool_calls_by_name": {
+    "get_patient": 1,
+    "get_record": 8,
+    "search_records": 1,
+    "update_working_context": 6
+  },
+  "usage": {
+    "completion_tokens": 7141,
+    "prompt_cache_hit_tokens": 36864,
+    "prompt_cache_miss_tokens": 81125,
+    "prompt_tokens": 117989,
+    "total_tokens": 125130
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "as_of": "2025-01-28T23:59:59Z",
+  "context_warnings": [],
+  "created_at": "2026-10-10T09:40:37.303404Z",
+  "discovered_record_ids": [
+    "gi-demo-005-rec-018",
+    "gi-demo-005-rec-017",
+    "gi-demo-005-rec-016",
+    "gi-demo-005-rec-015"
+  ],
+  "discovered_records": [
+    {
+      "available_at": "2025-01-28T09:30:00Z",
+      "clinical_time": "2025-01-28T09:30:00Z",
+      "exam_type": null,
+      "preview": "胆囊切除后的恢复和未解决事项。",
+      "record_id": "gi-demo-005-rec-018",
+      "record_type": "note",
+      "status": "已签署",
+      "title": "外科术后随访",
+      "workflow_id": "index-admission-cholecystectomy-005",
+      "workflow_stage": "postoperative_followup"
+    },
+    {
+      "available_at": "2025-01-17T14:00:00Z",
+      "clinical_time": "2025-01-17T14:00:00Z",
+      "exam_type": "gallbladder_histopathology",
+      "preview": "手术标本的最终组织学。",
+      "record_id": "gi-demo-005-rec-017",
+      "record_type": "result",
+      "status": "最终结果",
+      "title": "胆囊切除标本病理结果",
+      "workflow_id": "index-admission-cholecystectomy-005",
+      "workflow_stage": "pathology_final"
+    },
+    {
+      "available_at": "2025-01-14T10:30:00Z",
+      "clinical_time": "2025-01-14T10:30:00Z",
+      "exam_type": "laparoscopic_cholecystectomy",
+      "preview": "轻症胆源性胰腺炎同次住院的胆囊切除状态。",
+      "record_id": "gi-demo-005-rec-016",
+      "record_type": "procedure",
+      "status": "已完成",
+      "title": "腹腔镜胆囊切除术操作记录",
+      "workflow_id": "index-admission-cholecystectomy-005",
+      "workflow_stage": "procedure_completed"
+    },
+    {
+      "available_at": "2025-01-13T09:00:00Z",
+      "clinical_time": "2025-01-13T09:00:00Z",
+      "exam_type": null,
+      "preview": "MRCP 后的临床变化和胆道处理决定。",
+      "record_id": "gi-demo-005-rec-015",
+      "record_type": "note",
+      "status": "已签署",
+      "title": "住院进展：肝胆指标下降且无需 ERCP",
+      "workflow_id": "acute-admission-005",
+      "workflow_stage": "inpatient_progress_and_ercp_decision"
+    }
+  ],
+  "encounter_id": "GI-DEMO-005-E03",
+  "final_evidence_refs": [
+    "gi-demo-005-rec-015",
+    "gi-demo-005-rec-016",
+    "gi-demo-005-rec-017",
+    "gi-demo-005-rec-018",
+    "patient-GI-DEMO-005"
+  ],
+  "final_summary": "本次为后续 encounter，先重读上次审阅点及之后的关键纵向记录（住院进展/ERCP 决策、胆囊切除操作、病理、术后随访），确认手术已由计划转为实际完成且无并发症、病理为良性、术后两周恢复良好、原择期排期无需执行；同时识别肝酶是否完全恢复及长期随访两项仍未解决的问题。未检索到未读相关记录，故直接形成阶段性结论。",
+  "inspected_record_ids": [
+    "gi-demo-005-rec-015",
+    "gi-demo-005-rec-016",
+    "gi-demo-005-rec-017",
+    "gi-demo-005-rec-018"
+  ],
+  "loaded_memory_ids": [
+    "mem-5083cdb6a31b",
+    "mem-eef057ea5f79"
+  ],
+  "patient_context": {
+    "conflicts": [],
+    "known_facts": [],
+    "question_states": [],
+    "relevant_record_refs": [],
+    "unresolved_questions": []
+  },
+  "patient_id": "GI-DEMO-005",
+  "patient_record_ids": [
+    "patient-GI-DEMO-005"
+  ],
+  "proposed_actions": [],
+  "record_last_read_steps": {
+    "gi-demo-005-rec-015": 5,
+    "gi-demo-005-rec-016": 5,
+    "gi-demo-005-rec-017": 5,
+    "gi-demo-005-rec-018": 5
+  },
+  "record_read_counts": {
+    "gi-demo-005-rec-015": 2,
+    "gi-demo-005-rec-016": 2,
+    "gi-demo-005-rec-017": 2,
+    "gi-demo-005-rec-018": 2
+  },
+  "run_id": "p1-run-d451c2d3278c",
+  "status": "complete",
+  "step": 6,
+  "stop_reason": "final_response",
+  "task": "这是一次后续 encounter。结合既往 Agent memory 与截至当前可用的纵向合成记录，核查自上次审阅后有哪些重要变化；区分已建立事实、已解决或仍未解决的问题及后续需要跟进的事项。memory 只用于指导检索，事实必须由本次已读取全文的记录支持。不要为了完整性读取无关记录。这是合成数据的数据流研究，不是真实临床诊疗。",
+  "updated_at": "2026-10-10T09:40:58.459537Z",
+  "verified_actions": []
+}

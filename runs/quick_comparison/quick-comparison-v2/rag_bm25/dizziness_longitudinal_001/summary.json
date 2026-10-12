@@ -1,0 +1,31 @@
+{
+  "artifact_dir": "runs\\quick_comparison\\quick-comparison-v2\\rag_bm25\\dizziness_longitudinal_001",
+  "case_id": "dizziness_longitudinal_001",
+  "method": "rag_bm25",
+  "model": "deepseek-flash",
+  "model_calls": 1,
+  "record_ids_exposed": [
+    "dz-rec-014",
+    "dz-rec-020",
+    "dz-rec-038",
+    "dz-rec-024",
+    "dz-rec-001",
+    "dz-rec-039",
+    "dz-rec-027",
+    "dz-rec-023"
+  ],
+  "records_exposed": 8,
+  "records_total": 40,
+  "status": "complete",
+  "tool_calls": 0,
+  "usage": {
+    "completion_tokens": 663,
+    "prompt_cache_hit_tokens": 1408,
+    "prompt_cache_miss_tokens": 159,
+    "prompt_tokens": 1567,
+    "prompt_tokens_details": {
+      "cached_tokens": 1408
+    },
+    "total_tokens": 2230
+  }
+}

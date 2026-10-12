@@ -1,0 +1,50 @@
+{
+  "experiment_id": "gi-demo-001-encounters-v1",
+  "git_commit": "5491c687075301bf936f7c8628a572a4c49bbd38",
+  "runtime_version": "phase1-v4.1-encounter-memory",
+  "requested_model": "deepseek-chat",
+  "provider_response_model": "deepseek-flash",
+  "limits_per_encounter": {
+    "max_steps": 10,
+    "max_tool_calls": 12,
+    "max_prompt_bytes": 32000
+  },
+  "tests_before_llm": {
+    "tests": 16,
+    "tests_phase1": 47,
+    "total": 63,
+    "result": "passed"
+  },
+  "runs": [
+    {
+      "encounter_id": "GI-DEMO-001-E01",
+      "run_id": "p1-run-e544b90b3855",
+      "status": "stopped",
+      "stop_reason": "tool_call_limit"
+    },
+    {
+      "encounter_id": "GI-DEMO-001-E02",
+      "run_id": "p1-run-619c4d4f6844",
+      "status": "complete",
+      "stop_reason": "final_response"
+    },
+    {
+      "encounter_id": "GI-DEMO-001-E03",
+      "run_id": "p1-run-bf871e9a57f2",
+      "status": "error",
+      "stop_reason": "prompt_context_too_large"
+    }
+  ],
+  "source_and_case_sha256": {
+    "src/clinical_agent_explorer_phase1/models.py": "7FE64D54D7CF248BC8E4ADF79EC892BDF850445CB7345F12070F68093E6BAF04",
+    "src/clinical_agent_explorer_phase1/storage.py": "667E34D95BE8B9A5D2151FEA32D8AF1C10ED68864762E3A978216AF3413C4DA6",
+    "src/clinical_agent_explorer_phase1/tools.py": "76E4A7E6767905BC5A0E72CBEF3CA5E104C6A1DB028B2D8C41D76575DBAD9899",
+    "src/clinical_agent_explorer_phase1/runtime.py": "AF0A2FD248335F4BFAA8894EFE5709D19529EE57D6D30B82286D1BA9A4CD1301",
+    "src/clinical_agent_explorer_phase1/cli.py": "50401F6701B0FFD02DCF0CF3506F3C8C9EB9C43BFDDA4B0B42B66A0FC349D4E7",
+    "src/clinical_agent_explorer_phase1/model_client.py": "B50361D6C9D2E1D68984FD5AB17F1F2252C13E927591749A313674B4CB49F506",
+    "cases/gastro_demo/gi_demo_001/clinical_records.jsonl": "91871FC27A0D3725D3C020D66A7FB5BE9AC01D0BB20D550F3122FCA417D7B887",
+    "cases/gastro_demo/gi_demo_001/record_metadata.json": "A2ACFC3C14BEC0AFFEDE720A1BA5551E47E54359C07B864A717209DAFF31C81F",
+    "cases/gastro_demo/gi_demo_001/encounters.json": "A4AF02F9D2DF4AA7CE914259DD7567C77543829B44D1A375480DE1D7467DBA94"
+  },
+  "preservation_note": "Each encounter was run exactly once in chronological order with one shared patient memory store. No post-result rerun or budget change was performed. The original p1-run-e76579fe5063 artifact hashes remain unchanged."
+}

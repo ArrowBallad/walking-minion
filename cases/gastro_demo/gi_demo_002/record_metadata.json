@@ -1,0 +1,20 @@
+{
+  "gi-demo-002-rec-001": {"available_at": "2023-04-18T10:10:00Z"},
+  "gi-demo-002-rec-002": {"available_at": "2025-02-12T09:00:00Z"},
+  "gi-demo-002-rec-003": {"available_at": "2025-02-12T09:15:00Z"},
+  "gi-demo-002-rec-004": {"available_at": "2025-05-06T14:20:00Z"},
+  "gi-demo-002-rec-005": {"available_at": "2025-05-06T14:35:00Z", "workflow_id": "gi-referral-002", "workflow_stage": "referral_requested"},
+  "gi-demo-002-rec-006": {"available_at": "2025-05-24T09:30:00Z", "workflow_id": "gi-referral-002", "workflow_stage": "specialist_visit"},
+  "gi-demo-002-rec-007": {"available_at": "2025-05-24T09:50:00Z", "exam_type": "upper_endoscopy", "workflow_id": "eoe-diagnostic-endoscopy-002", "workflow_stage": "requested_and_scheduled"},
+  "gi-demo-002-rec-008": {"available_at": "2025-06-18T08:30:00Z", "exam_type": "upper_endoscopy", "workflow_id": "eoe-diagnostic-endoscopy-002", "workflow_stage": "procedure_completed"},
+  "gi-demo-002-rec-009": {"available_at": "2025-06-18T09:05:00Z", "exam_type": "upper_endoscopy", "workflow_id": "eoe-diagnostic-endoscopy-002", "workflow_stage": "endoscopy_report_final", "keywords": ["胃镜报告", "食管", "最终报告"]},
+  "gi-demo-002-rec-010": {"available_at": "2025-06-23T15:40:00Z", "exam_type": "esophageal_histopathology", "workflow_id": "eoe-diagnostic-endoscopy-002", "workflow_stage": "pathology_final", "keywords": ["食管活检", "病理", "最终结果"]},
+  "gi-demo-002-rec-011": {"available_at": "2025-06-27T10:00:00Z", "workflow_id": "eoe-treatment-002", "workflow_stage": "results_review_and_plan"},
+  "gi-demo-002-rec-012": {"available_at": "2025-06-27T10:15:00Z", "workflow_id": "eoe-treatment-002", "workflow_stage": "treatment_started"},
+  "gi-demo-002-rec-013": {"available_at": "2025-09-19T09:20:00Z", "workflow_id": "eoe-treatment-response-002", "workflow_stage": "clinical_followup"},
+  "gi-demo-002-rec-014": {"available_at": "2025-09-19T09:35:00Z", "exam_type": "upper_endoscopy", "workflow_id": "eoe-response-endoscopy-002", "workflow_stage": "requested_and_scheduled"},
+  "gi-demo-002-rec-015": {"available_at": "2025-10-08T08:00:00Z", "exam_type": "upper_endoscopy", "workflow_id": "eoe-response-endoscopy-002", "workflow_stage": "procedure_completed"},
+  "gi-demo-002-rec-016": {"available_at": "2025-10-08T08:35:00Z", "exam_type": "upper_endoscopy", "workflow_id": "eoe-response-endoscopy-002", "workflow_stage": "endoscopy_report_final", "keywords": ["复查胃镜", "食管", "最终报告"]},
+  "gi-demo-002-rec-017": {"available_at": "2025-10-13T14:20:00Z", "exam_type": "esophageal_histopathology", "workflow_id": "eoe-response-endoscopy-002", "workflow_stage": "pathology_final", "keywords": ["复查食管活检", "病理", "最终结果"]},
+  "gi-demo-002-rec-018": {"available_at": "2025-10-17T11:00:00Z", "workflow_id": "eoe-treatment-response-002", "workflow_stage": "maintenance_plan"}
+}

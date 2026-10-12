@@ -1,0 +1,61 @@
+{
+  "experiment_id": "gi-demo-001-encounters-v2-controlled-rerun",
+  "git_commit": "5491c687075301bf936f7c8628a572a4c49bbd38",
+  "runtime_version": "phase1-v4.2-prompt-budget",
+  "requested_model": "deepseek-chat",
+  "provider_response_model": "deepseek-flash",
+  "limits_per_encounter": {
+    "max_steps": 10,
+    "max_tool_calls": 12,
+    "max_prompt_bytes": 32000
+  },
+  "tests_before_llm": {
+    "tests": 16,
+    "tests_phase1": 49,
+    "total": 65,
+    "result": "passed"
+  },
+  "runs": [
+    {
+      "encounter_id": "GI-DEMO-001-E01",
+      "run_id": "p1-run-2ed3c307f21d",
+      "status": "complete",
+      "stop_reason": "final_response",
+      "model_calls": 3,
+      "executed_tool_calls": 6,
+      "max_prompt_bytes_observed": 21274
+    },
+    {
+      "encounter_id": "GI-DEMO-001-E02",
+      "run_id": "p1-run-7b4ee7428483",
+      "status": "complete",
+      "stop_reason": "final_response",
+      "model_calls": 3,
+      "executed_tool_calls": 6,
+      "max_prompt_bytes_observed": 27449
+    },
+    {
+      "encounter_id": "GI-DEMO-001-E03",
+      "run_id": "p1-run-94272b0cdf88",
+      "status": "complete",
+      "stop_reason": "final_response",
+      "model_calls": 6,
+      "executed_tool_calls": 11,
+      "max_prompt_bytes_observed": 31687
+    }
+  ],
+  "source_and_test_sha256": {
+    "src/clinical_agent_explorer_phase1/runtime.py": "F1441705A4DA40EC16AFD11891E4236C29DDC644E65432E02BE7620C3F84F55A",
+    "tests_phase1/test_encounter_protocol.py": "5CA36BD33B8B54D1D2EB8C845D9CB2B613BB6D101BF944BE932414E2E8123CFC",
+    "tests_phase1/test_batched_tool_calls.py": "0D253AB572AD4A0519B4B565CDFB502AC883B12857F697F1C46199F53557736D",
+    "tests_phase1/test_stopping_contract.py": "21C70DB3D1DA68D3A6274658133CA8DF7589EE379F2ACA0EA3E82EA9479D5772",
+    "scripts/analyze_encounter_prompt_growth.py": "9A2CB7DAA026DB051FFEDCEFFBB5992C82429BBA03210136CD249F12CAD8765F",
+    "scripts/analyze_controlled_encounter_rerun.py": "11F9B0DE29AAC715ED8378D6950F3AE9C10F2216FC77641E609EEE4B85860A54"
+  },
+  "case_sha256": {
+    "cases/gastro_demo/gi_demo_001/clinical_records.jsonl": "91871FC27A0D3725D3C020D66A7FB5BE9AC01D0BB20D550F3122FCA417D7B887",
+    "cases/gastro_demo/gi_demo_001/record_metadata.json": "A2ACFC3C14BEC0AFFEDE720A1BA5551E47E54359C07B864A717209DAFF31C81F",
+    "cases/gastro_demo/gi_demo_001/encounters.json": "A4AF02F9D2DF4AA7CE914259DD7567C77543829B44D1A375480DE1D7467DBA94"
+  },
+  "preservation_note": "E01, E02 and E03 were each executed exactly once in chronological order against one reset instance and one shared memory store. No post-result rerun or model-specific prompt tuning was performed."
+}

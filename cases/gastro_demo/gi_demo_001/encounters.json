@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "availability_source": "record_metadata.json",
+  "encounters": [
+    {
+      "encounter_id": "GI-DEMO-001-E01",
+      "patient_id": "GI-DEMO-001",
+      "as_of": "2025-01-24T23:59:59Z",
+      "expected_available_record_count": 5,
+      "task": "审阅截至本次 encounter 可用的纵向合成记录。说明当前重要进展，区分已建立事实、仍不确定事项和后续需要跟进的问题；仅用本次已读取全文的记录支持事实。不要为了完整性读取与当前信息需求无关的记录。这是合成数据的数据流研究，不是真实临床诊疗。"
+    },
+    {
+      "encounter_id": "GI-DEMO-001-E02",
+      "patient_id": "GI-DEMO-001",
+      "as_of": "2025-03-07T23:59:59Z",
+      "expected_available_record_count": 13,
+      "task": "这是一次后续 encounter。结合既往 Agent memory 与截至当前可用的纵向合成记录，核查自上次审阅后有哪些重要变化；区分已建立事实、已解决或仍未解决的问题及后续需要跟进的事项。memory 只用于指导检索，事实必须由本次已读取全文的记录支持。不要为了完整性读取无关记录。这是合成数据的数据流研究，不是真实临床诊疗。"
+    },
+    {
+      "encounter_id": "GI-DEMO-001-E03",
+      "patient_id": "GI-DEMO-001",
+      "as_of": "2025-09-20T23:59:59Z",
+      "expected_available_record_count": 18,
+      "task": "这是一次后续 encounter。结合既往 Agent memory 与截至当前可用的纵向合成记录，核查自上次审阅后有哪些重要变化；区分已建立事实、已解决或仍未解决的问题及后续需要跟进的事项。memory 只用于指导检索，事实必须由本次已读取全文的记录支持。不要为了完整性读取无关记录。这是合成数据的数据流研究，不是真实临床诊疗。"
+    }
+  ]
+}

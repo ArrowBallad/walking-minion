@@ -1,0 +1,89 @@
+{
+  "gi-demo-001-rec-001": {
+    "available_at": "2024-06-12T07:45:00Z",
+    "exam_type": "complete_blood_count"
+  },
+  "gi-demo-001-rec-002": {
+    "available_at": "2025-01-22T09:00:00Z"
+  },
+  "gi-demo-001-rec-003": {
+    "available_at": "2025-01-22T10:20:00Z",
+    "exam_type": "cbc_and_iron_panel"
+  },
+  "gi-demo-001-rec-004": {
+    "available_at": "2025-01-23T14:30:00Z",
+    "exam_type": "stool_infection_and_inflammation_screen"
+  },
+  "gi-demo-001-rec-005": {
+    "available_at": "2025-01-24T11:15:00Z",
+    "workflow_id": "gi-referral-2025",
+    "workflow_stage": "referral_requested"
+  },
+  "gi-demo-001-rec-006": {
+    "available_at": "2025-02-05T09:30:00Z",
+    "workflow_id": "gi-referral-2025",
+    "workflow_stage": "specialist_visit"
+  },
+  "gi-demo-001-rec-007": {
+    "available_at": "2025-02-06T08:05:00Z",
+    "exam_type": "celiac_serology",
+    "workflow_id": "malabsorption-workup-2025",
+    "workflow_stage": "serology_final"
+  },
+  "gi-demo-001-rec-008": {
+    "available_at": "2025-02-07T10:00:00Z"
+  },
+  "gi-demo-001-rec-009": {
+    "available_at": "2025-02-10T13:20:00Z",
+    "exam_type": "upper_endoscopy",
+    "workflow_id": "upper-endoscopy-2025-02",
+    "workflow_stage": "requested_and_scheduled"
+  },
+  "gi-demo-001-rec-010": {
+    "available_at": "2025-02-26T08:30:00Z",
+    "exam_type": "upper_endoscopy",
+    "workflow_id": "upper-endoscopy-2025-02",
+    "workflow_stage": "procedure_completed"
+  },
+  "gi-demo-001-rec-011": {
+    "available_at": "2025-02-26T09:05:00Z",
+    "exam_type": "upper_endoscopy",
+    "workflow_id": "upper-endoscopy-2025-02",
+    "workflow_stage": "endoscopy_report_final",
+    "keywords": ["胃镜报告", "十二指肠", "最终报告"]
+  },
+  "gi-demo-001-rec-012": {
+    "available_at": "2025-03-03T15:10:00Z",
+    "exam_type": "duodenal_histopathology",
+    "workflow_id": "upper-endoscopy-2025-02",
+    "workflow_stage": "pathology_final",
+    "keywords": ["十二指肠活检", "病理", "最终结果"]
+  },
+  "gi-demo-001-rec-013": {
+    "available_at": "2025-03-07T10:20:00Z",
+    "workflow_id": "malabsorption-workup-2025",
+    "workflow_stage": "results_review_and_plan"
+  },
+  "gi-demo-001-rec-014": {
+    "available_at": "2025-03-08T07:55:00Z",
+    "exam_type": "nutrition_and_metabolic_panel"
+  },
+  "gi-demo-001-rec-015": {
+    "available_at": "2025-03-10T09:40:00Z"
+  },
+  "gi-demo-001-rec-016": {
+    "available_at": "2025-03-14T14:00:00Z"
+  },
+  "gi-demo-001-rec-017": {
+    "available_at": "2025-09-19T09:30:00Z",
+    "workflow_id": "six-month-followup-2025-09",
+    "workflow_stage": "followup_visit",
+    "keywords": ["六个月随访", "饮食复核", "消化内科"]
+  },
+  "gi-demo-001-rec-018": {
+    "available_at": "2025-09-20T08:10:00Z",
+    "exam_type": "followup_blood_and_serology_panel",
+    "workflow_id": "six-month-followup-2025-09",
+    "workflow_stage": "followup_labs_final"
+  }
+}

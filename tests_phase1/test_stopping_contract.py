@@ -25,7 +25,7 @@ class StoppingContractTests(unittest.TestCase):
             )
 
             self.assertEqual("complete", state.status)
-            self.assertEqual("phase1-v4-retrieval-awareness", RUNTIME_VERSION)
+            self.assertEqual("phase1-v4.3-context-retry", RUNTIME_VERSION)
             self.assertIn("不需要解决所有 unresolved questions 才能结束", SYSTEM_PROMPT)
             self.assertIn("应优先结束并生成 final", SYSTEM_PROMPT)
             self.assertIn("可能实质改变当前 assessment", SYSTEM_PROMPT)
